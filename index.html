@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>오늘의 운세 — 八卦로 보는 하루</title>
+<meta name="description" content="天地人日月風水火, 八卦 카드로 보는 오늘의 운세. 마음 가는 카드 한 장을 골라보세요.">
+
+<!-- ⚠️ 배포 전 수정: 아래 두 줄의 https://YOUR-DOMAIN.com 부분을 실제 호스팅 주소로 바꿔주세요.
+     (예: https://username.github.io/fortune  또는  https://yoursite.com)
+     절대 URL이어야 카카오톡/페이스북/X에서 미리보기가 정상으로 뜹니다. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="오늘의 운세 — 八卦로 보는 하루">
+<meta property="og:description" content="天地人日月風水火, 八卦 카드로 보는 오늘의 운세. 마음 가는 카드 한 장을 골라보세요.">
+<meta property="og:image" content="https://YOUR-DOMAIN.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://YOUR-DOMAIN.com/">
+<meta property="og:site_name" content="오늘의 운세">
+<meta property="og:locale" content="ko_KR">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="오늘의 운세 — 八卦로 보는 하루">
+<meta name="twitter:description" content="마음 가는 카드 한 장을 골라보세요.">
+<meta name="twitter:image" content="https://YOUR-DOMAIN.com/og-image.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F1E6;
+    --bg-card: #FFFEF9;
+    --ink: #2C2A24;
+    --ink-soft: #6B655C;
+    --ink-faint: #A39E94;
+    --line: #E5DFD0;
+    --gold: #B8860B;
+    --seal: #B23A48;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page { max-width: 760px; margin: 0 auto; padding: 48px 24px 64px; }
+  .header { text-align: center; margin-bottom: 36px; }
+  .title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 28px; font-weight: 500;
+    letter-spacing: 0.15em; margin-bottom: 8px;
+  }
+  .title-mark {
+    display: inline-block; width: 32px; height: 1px;
+    background: var(--ink-faint); margin: 0 12px; vertical-align: middle;
+  }
+  .date { font-size: 14px; color: var(--ink-soft); letter-spacing: 0.05em; }
+  .prompt {
+    text-align: center; font-family: 'Noto Serif KR', serif;
+    font-size: 15px; color: var(--ink-soft);
+    margin-bottom: 28px; letter-spacing: 0.02em;
+  }
+  .reshuffle { text-align: center; margin-bottom: 24px; }
+  .reshuffle-btn {
+    background: transparent; border: none; font-family: inherit;
+    font-size: 12px; color: var(--ink-faint); cursor: pointer;
+    padding: 4px 10px; letter-spacing: 0.1em; transition: color 0.2s;
+  }
+  .reshuffle-btn:hover { color: var(--ink-soft); }
+  .reshuffle-btn::before { content: '↻ '; margin-right: 2px; }
+  .cards {
+    display: flex; justify-content: center; gap: 14px;
+    flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .card {
+    width: 130px; height: 180px;
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 4px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s, box-shadow 0.3s, border-color 0.3s;
+    position: relative; box-shadow: 0 1px 3px rgba(60, 50, 30, 0.04);
+  }
+  .card::before {
+    content: ''; position: absolute; inset: 6px;
+    border: 0.5px solid var(--line); border-radius: 2px; pointer-events: none;
+  }
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 20px rgba(60, 50, 30, 0.08);
+    border-color: var(--ink-faint);
+  }
+  .card.faded { opacity: 0.15; pointer-events: none; }
+  .card.picked {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 24px rgba(60, 50, 30, 0.12);
+    border-color: var(--ink-soft);
+  }
+  .hanja {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 56px; font-weight: 500; line-height: 1; margin-bottom: 12px;
+  }
+  .label { font-size: 12px; color: var(--ink-soft); letter-spacing: 0.1em; text-align: center; }
+  .label .ko { display: block; font-size: 12px; margin-bottom: 2px; }
+  .label .en { display: block; font-size: 11px; color: var(--ink-faint); }
+  .result { opacity: 0; max-height: 0; overflow: hidden; transition: opacity 0.6s ease, max-height 0.6s ease; }
+  .result.show { opacity: 1; max-height: 2500px; margin-top: 24px; }
+  .result-inner {
+    background: var(--bg-card); border: 1px solid var(--line);
+    border-radius: 4px; padding: 36px 28px 24px; position: relative;
+  }
+  .result-inner::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 0.5px solid var(--line); border-radius: 2px; pointer-events: none;
+  }
+  .picked-name {
+    text-align: center; font-family: 'Noto Serif KR', serif;
+    font-size: 13px; color: var(--ink-faint);
+    letter-spacing: 0.15em; margin-bottom: 18px;
+  }
+  .picked-name .ch { font-size: 18px; margin-right: 6px; }
+  .picked-name .domain {
+    display: block; margin-top: 6px; font-size: 11px;
+    color: var(--ink-faint); letter-spacing: 0.2em;
+  }
+  .score-block { text-align: center; margin-bottom: 20px; }
+  .score-num { font-family: 'Noto Serif KR', serif; font-size: 52px; font-weight: 500; line-height: 1; }
+  .score-suffix { font-size: 14px; color: var(--ink-soft); margin-left: 4px; }
+  .stars { margin-top: 8px; font-size: 18px; color: var(--gold); letter-spacing: 6px; }
+  .tier {
+    display: inline-block; margin-top: 10px;
+    padding: 3px 12px; border: 0.5px solid var(--line); border-radius: 999px;
+    font-size: 11px; color: var(--ink-soft); letter-spacing: 0.15em;
+  }
+  .summary {
+    font-family: 'Noto Serif KR', serif; text-align: center;
+    font-size: 16px; line-height: 1.85; margin: 22px 12px 28px; color: var(--ink);
+  }
+  .summary::before, .summary::after {
+    content: '"'; color: var(--ink-faint); font-size: 22px; margin: 0 4px;
+  }
+  .fields {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px; margin-bottom: 20px;
+  }
+  .field {
+    padding: 14px; border: 0.5px solid var(--line);
+    border-radius: 3px; background: rgba(0, 0, 0, 0.01);
+  }
+  .field-title {
+    font-family: 'Noto Serif KR', serif; font-size: 12px;
+    color: var(--ink-faint); letter-spacing: 0.15em; margin-bottom: 8px;
+  }
+  .field-text { font-size: 13.5px; line-height: 1.7; color: var(--ink); }
+  .lucky {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 6px; margin-bottom: 20px; padding: 14px 10px;
+    background: rgba(184, 134, 11, 0.05); border-radius: 3px;
+  }
+  .lucky-item { text-align: center; }
+  .lucky-label { font-size: 11px; color: var(--ink-faint); letter-spacing: 0.1em; margin-bottom: 4px; }
+  .lucky-val { font-size: 14px; font-weight: 500; color: var(--ink); }
+  .proverb {
+    text-align: center; font-family: 'Noto Serif KR', serif;
+    font-size: 15px; color: var(--ink-soft);
+    padding: 20px 12px 0; border-top: 0.5px solid var(--line); line-height: 1.7;
+  }
+  .proverb-mark {
+    display: block; font-size: 11px; color: var(--ink-faint);
+    letter-spacing: 0.2em; margin-bottom: 8px;
+  }
+  .actions { display: flex; justify-content: center; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+  .btn {
+    padding: 9px 22px; background: transparent; border: 0.5px solid var(--ink-soft);
+    border-radius: 3px; color: var(--ink); font-family: inherit;
+    font-size: 13px; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s;
+  }
+  .btn:hover { background: var(--ink); color: var(--bg-card); }
+  .btn.subtle { border-color: var(--line); color: var(--ink-soft); }
+  .btn.subtle:hover { background: var(--ink-soft); color: var(--bg-card); }
+
+  /* Share section */
+  .share {
+    margin-top: 18px;
+    padding-top: 18px;
+    border-top: 0.5px dashed var(--line);
+    text-align: center;
+  }
+  .share-label {
+    font-size: 11px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+    margin-bottom: 12px;
+  }
+  .share-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .share-btn {
+    background: transparent;
+    border: 0.5px solid var(--line);
+    border-radius: 999px;
+    padding: 7px 16px;
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .share-btn:hover {
+    background: var(--bg-card);
+    border-color: var(--ink-faint);
+    color: var(--ink);
+  }
+  .share-btn.copied {
+    background: var(--ink);
+    color: var(--bg-card);
+    border-color: var(--ink);
+  }
+  .share-btn svg { width: 13px; height: 13px; }
+
+  .footer {
+    text-align: center; margin-top: 40px; font-size: 11px;
+    color: var(--ink-faint); letter-spacing: 0.15em;
+  }
+
+  /* Toast notification */
+  .toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-80px);
+    background: var(--ink);
+    color: var(--bg-card);
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  @media (max-width: 540px) {
+    .page { padding: 32px 16px 48px; }
+    .title { font-size: 22px; }
+    .card { width: calc(50% - 6px); height: 150px; max-width: 150px; }
+    .hanja { font-size: 48px; margin-bottom: 8px; }
+    .cards { gap: 10px; }
+    .summary { font-size: 15px; margin: 18px 4px 22px; }
+    .score-num { font-size: 42px; }
+    .result-inner { padding: 28px 18px 20px; }
+    .fields { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="toast" id="toast">링크가 복사되었습니다</div>
+
+<div class="page">
+  <div class="header">
+    <h1 class="title"><span class="title-mark"></span>오늘의 운세<span class="title-mark"></span></h1>
+    <div class="date" id="date"></div>
+  </div>
+  <div class="prompt">마음 가는 카드를 한 장 고르세요</div>
+  <div class="reshuffle">
+    <button class="reshuffle-btn" onclick="shuffleAndRender()">카드 다시 섞기</button>
+  </div>
+  <div class="cards" id="cards"></div>
+
+  <div class="result" id="result">
+    <div class="result-inner">
+      <div class="picked-name" id="pickedName"></div>
+      <div class="score-block">
+        <span class="score-num" id="scoreNum"></span><span class="score-suffix">/ 100</span>
+        <div class="stars" id="stars"></div>
+        <div class="tier" id="tier"></div>
+      </div>
+      <div class="summary" id="summary"></div>
+      <div class="fields" id="fields"></div>
+      <div class="lucky" id="luckyBlock"></div>
+      <div class="proverb">
+        <span class="proverb-mark">한 줄</span>
+        <span id="proverbText"></span>
+      </div>
+      <div class="actions">
+        <button class="btn" onclick="resetAll()">처음으로</button>
+        <button class="btn subtle" onclick="rerollCurrent()">같은 카드 다시 보기</button>
+      </div>
+      <div class="share">
+        <div class="share-label">공유하기</div>
+        <div class="share-buttons">
+          <button class="share-btn" onclick="nativeShare()" id="shareNative">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+            공유
+          </button>
+          <button class="share-btn" onclick="copyLink(this)" id="shareCopy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            링크 복사
+          </button>
+          <button class="share-btn" onclick="shareTwitter()">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X에 공유
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">天地人日月風水火 · 八卦 운세</div>
+</div>
+
+<script>
+const CARDS = {
+  '天': {
+    hanja: '天', name: '천 · 하늘', domain: '큰 흐름과 마음가짐', color: '#2E5C8A',
+    range: [70, 95],
+    fields: [
+      { label: '오늘의 흐름', pool: [
+        '구름 한 점 없이 트인 하늘. 막힌 일이 풀립니다',
+        '잔잔한 바람의 하루. 서두르지 않아도 진행됩니다',
+        '새벽처럼 청량한 기운. 새로운 시작에 어울립니다',
+        '노을의 따스함이 깃든 하루. 마무리가 부드럽습니다',
+        '안개가 천천히 걷히는 풍경. 답이 서서히 보입니다',
+        '큰 비 뒤의 맑음. 어제의 힘듦이 보상받습니다',
+        '바람이 방향을 바꾸는 하루. 변화의 신호를 놓치지 마세요',
+        '하늘이 한층 높아진 듯한 시야. 멀리 볼 만합니다',
+        '별빛이 또렷한 밤. 직관을 믿어도 좋습니다',
+        '무지개가 잠깐 떠오르는 하늘. 작은 행운이 깃듭니다'
+      ]},
+      { label: '마음가짐', pool: [
+        '욕심을 한 발 내려놓으세요',
+        '들숨과 날숨에 잠시 집중',
+        '결과보다 과정에 머물러보세요',
+        '비교를 잠시 멈추세요',
+        '오늘은 가벼움이 곧 강함입니다',
+        '모르면 모른다고 말해도 됩니다',
+        '거절도 친절일 수 있습니다',
+        '한 박자 늦춰도 충분합니다'
+      ]},
+      { label: '좋은 시간', pool: [
+        '이른 아침 06–09시',
+        '오전 중반 10–12시',
+        '점심 직후 13–15시',
+        '늦은 오후 15–17시',
+        '해 질 무렵 17–19시',
+        '저녁 식후 20–22시',
+        '한밤의 고요한 시간',
+        '마음이 정해지는 그 순간'
+      ]}
+    ],
+    proverbs: [
+      '하늘은 스스로 돕는 자를 돕는다',
+      '맑은 날도 비 올 날도 같은 하늘이다',
+      '하늘이 무너져도 솟아날 구멍이 있다',
+      '큰 그림을 그릴 줄 아는 자가 멀리 간다',
+      '하늘은 서두르지 않으나 늦지도 않는다'
+    ]
+  },
+  '地': {
+    hanja: '地', name: '지 · 땅', domain: '일과 재물', color: '#8B6F47',
+    range: [70, 92],
+    fields: [
+      { label: '일·실무', pool: [
+        '미뤄둔 정리가 의외로 빨리 끝납니다',
+        '협업이 매끄러운 날. 도움을 청해도 좋습니다',
+        '집중력이 평소보다 높습니다. 어려운 일부터',
+        '디테일을 한 번 더 점검하면 큰 실수를 막습니다',
+        '큰 결정보다 작은 정리에 시간을',
+        '메모와 기록이 보배가 되는 하루',
+        '명확한 의사소통이 시간을 벌어줍니다',
+        '오래된 약속을 지키기 좋은 날',
+        '속도보다 방향이 중요한 하루',
+        '잠깐의 휴식이 효율을 두 배로'
+      ]},
+      { label: '재물·금전', pool: [
+        '작은 절약이 큰 만족으로',
+        '예상치 못한 부수입의 기미',
+        '충동적 지출은 한 번 더 생각',
+        '오래된 빚이나 약속을 정리하기 좋음',
+        '투자보다 저축이 어울리는 날',
+        '지갑 정리가 운을 부릅니다',
+        '큰 지출은 한 박자 미루세요',
+        '나누면 두 배가 되는 흐름',
+        '가계부를 들여다볼 만한 날',
+        '오래 기다린 보상이 다가옵니다'
+      ]}
+    ],
+    lucky: true,
+    proverbs: [
+      '티끌 모아 태산',
+      '땅 짚고 헤엄치기',
+      '뿌린 대로 거둔다',
+      '천 리 길도 한 걸음부터',
+      '쌀독에서 인심 난다'
+    ]
+  },
+  '人': {
+    hanja: '人', name: '인 · 사람', domain: '관계와 인연', color: '#8B4789',
+    range: [62, 95],
+    fields: [
+      { label: '오늘의 만남', pool: [
+        '오랜만의 연락이 반갑습니다',
+        '새로운 인연의 작은 신호',
+        '익숙한 사람의 다른 모습을 발견',
+        '깊은 대화를 나누기 좋은 날',
+        '짧지만 의미 있는 만남이 기다립니다',
+        '모임보다 일대일이 어울리는 하루',
+        '잠시 거리를 두는 것이 관계를 살립니다',
+        '우연한 마주침이 의미를 갖습니다',
+        '잊었던 사람이 떠오릅니다. 안부를',
+        '작은 메시지 하나가 큰 위로가 됩니다'
+      ]},
+      { label: '관계 조언', pool: [
+        '침묵도 대답입니다',
+        '솔직함은 가장 정중한 예의',
+        '같은 말도 시간을 가려서',
+        '사과는 빠를수록 가볍습니다',
+        '칭찬을 아끼지 마세요',
+        '거리를 둔다고 멀어지는 건 아닙니다',
+        '들을 때는 조언하지 마세요',
+        '작은 약속도 큰 신뢰가 됩니다',
+        '떠나는 사람을 너무 붙잡지 마세요',
+        '진심은 결국 닿습니다'
+      ]},
+      { label: '소통의 결', pool: [
+        '말보다 표정을 살피세요',
+        '먼저 인사하기 좋은 날',
+        '오해는 직접 풀기',
+        '기다림이 답일 때가 있습니다',
+        '한 박자 쉬고 답하세요',
+        '긴 글보다 짧은 한 줄',
+        '전화 한 통이 더 빠릅니다',
+        '얼굴 보고 말하면 풀리는 일'
+      ]}
+    ],
+    proverbs: [
+      '곁의 사람이 가장 큰 행운입니다',
+      '인연은 강요할 수 없습니다',
+      '들어주는 사람이 사랑받습니다',
+      '진심은 결국 닿는다',
+      '미운 마음도 시간이 풀어준다',
+      '백 사람의 친구보다 한 사람의 진심'
+    ]
+  },
+  '日': {
+    hanja: '日', name: '일 · 해', domain: '활력과 시작', color: '#D4691A',
+    range: [72, 95],
+    fields: [
+      { label: '활력의 결', pool: [
+        '햇살처럼 가득한 에너지',
+        '평소보다 한 톤 밝은 활력',
+        '잔잔하지만 꾸준한 기운',
+        '오전에 집중되는 에너지',
+        '오후에 살아나는 활력',
+        '짧고 강한 추진력',
+        '익숙한 일에 강한 추진력',
+        '새로운 일에 어울리는 신선한 기운'
+      ]},
+      { label: '시작에 좋은 일', pool: [
+        '미뤄둔 운동 한 가지',
+        '새 책의 첫 장',
+        '오랜만의 청소',
+        '작은 약속 잡기',
+        '보내지 못한 메시지',
+        '오래된 친구에게 안부',
+        '새로운 루틴의 첫날',
+        '잠깐의 명상',
+        '미뤄둔 검진 예약',
+        '글쓰기 한 줄'
+      ]},
+      { label: '추진력', pool: [
+        '첫 5분만 시작하면 됩니다',
+        '완벽보다 시작이 중요',
+        '큰 목표를 작게 쪼개세요',
+        '한 번에 하나만',
+        '작은 성공을 자축하세요',
+        '도움을 청하는 것도 추진력',
+        '끝낼 시간을 정해두세요',
+        '잠깐의 산책이 추진력을 살립니다'
+      ]}
+    ],
+    proverbs: [
+      '시작이 반이다',
+      '오늘 시작한 일이 내일의 길을 만든다',
+      '햇살은 누구에게나 공평하다',
+      '작은 빛도 어둠을 밀어낸다',
+      '매일의 한 걸음이 모인다'
+    ]
+  },
+  '月': {
+    hanja: '月', name: '월 · 달', domain: '휴식과 내면', color: '#5A6D8A',
+    range: [65, 90],
+    fields: [
+      { label: '오늘의 휴식', pool: [
+        '일찍 자는 것이 보약',
+        '한 시간 일찍 일을 마쳐보세요',
+        '따뜻한 차 한 잔의 여유',
+        '산책 30분이면 충분',
+        '좋아하는 음악을 들어보세요',
+        '책 한 페이지의 위안',
+        '스마트폰을 잠깐 꺼두기',
+        '오래된 영화 한 편',
+        '따뜻한 목욕물에 몸을 담그기',
+        '창밖을 5분만 바라보기'
+      ]},
+      { label: '내면의 소리', pool: [
+        '마음이 가는 곳에 답이 있습니다',
+        '직관을 한 번 믿어보세요',
+        '"왜 이러지?"보다 "그럴 수도 있지"',
+        '거절하고 싶은 마음을 존중',
+        '외로움도 일종의 신호입니다',
+        '채우기 전에 비워보세요',
+        '피곤함이 알려주는 것이 있습니다',
+        '갑작스런 충동에 잠시 멈춰보세요'
+      ]},
+      { label: '좋은 시간', pool: [
+        '새벽 직전 가장 고요한 때',
+        '늦은 오후의 휴식',
+        '식사 후 짧은 산책',
+        '잠들기 전 30분',
+        '점심 후 5분 멍때리기',
+        '해 지기 직전',
+        '비 오는 오후',
+        '평일 늦은 밤'
+      ]}
+    ],
+    proverbs: [
+      '달은 다시 차오른다',
+      '쉬는 것도 일이다',
+      '고요함 속에 답이 있다',
+      '어둠이 별을 만든다',
+      '침묵이 가장 큰 위로일 때가 있다'
+    ]
+  },
+  '風': {
+    hanja: '風', name: '풍 · 바람', domain: '변화와 새로움', color: '#6F8F6E',
+    range: [62, 92],
+    fields: [
+      { label: '변화의 신호', pool: [
+        '익숙한 길에서 다른 풍경이 보입니다',
+        '작은 결정 하나가 큰 흐름을 바꿉니다',
+        '옛 인연이 떠나고 새 인연이 찾아옵니다',
+        '계획에 변동이 있지만 더 좋은 방향',
+        '마음의 방향이 바뀔 만한 신호',
+        '새로운 정보가 시야를 넓힙니다',
+        '한 자리에 오래 머물 필요 없습니다',
+        '정체된 일에 바람이 붑니다',
+        '작은 변화부터 시작해보세요',
+        '익숙한 것을 한 번 다르게'
+      ]},
+      { label: '새로운 시도', pool: [
+        '가본 적 없는 길로 산책',
+        '처음 보는 카페',
+        '새로운 음식 한 가지',
+        '다른 음악 장르',
+        '안 가본 동네 한 바퀴',
+        '다른 출퇴근 길',
+        '안 읽던 분야의 책',
+        '안 입던 옷 색깔',
+        '새 영화 장르',
+        '평소와 다른 시간의 식사'
+      ]},
+      { label: '이동의 결', pool: [
+        '가까운 곳도 여행이 됩니다',
+        '짧은 외출이 기분을 바꿉니다',
+        '동네 한 바퀴면 충분',
+        '잠깐의 드라이브가 도움됩니다',
+        '큰 짐 없는 가벼운 외출',
+        '혼자만의 시간을 가져보세요',
+        '누군가와 함께 걸어보세요',
+        '산책 코스를 바꿔보세요'
+      ]}
+    ],
+    proverbs: [
+      '바람은 멈추지 않고 길을 만든다',
+      '변화는 늘 작은 것에서',
+      '흘러야 살아있다',
+      '계절은 반드시 온다',
+      '같은 자리도 다른 시간엔 다르다'
+    ]
+  },
+  '水': {
+    hanja: '水', name: '수 · 물', domain: '유연함과 직관', color: '#3A7CA5',
+    range: [70, 90],
+    fields: [
+      { label: '유연함의 결', pool: [
+        '굽힐 때 강해집니다',
+        '모서리를 둥글게 다듬어보세요',
+        '강한 의견에 한 발 양보',
+        '계획을 살짝 비틀어도 괜찮습니다',
+        '흐름을 거스르지 마세요',
+        '막히면 우회하세요',
+        '형식보다 본질',
+        '받아들이는 것도 능력입니다',
+        '단단함과 부드러움 사이의 균형',
+        '차가움보다 따뜻함이 빠릅니다'
+      ]},
+      { label: '흘려보낼 것', pool: [
+        '어제의 후회',
+        '누군가의 무심한 말',
+        '결과가 달라진 일',
+        '통제할 수 없는 일',
+        '오래된 원망',
+        '의미 없는 비교',
+        '답 없는 걱정',
+        '"그때 했더라면"의 마음',
+        '오해받은 순간',
+        '지나간 인연'
+      ]},
+      { label: '직관의 신호', pool: [
+        '처음 떠오른 답이 맞을 때가 많습니다',
+        '이유 없는 망설임에 귀 기울이기',
+        '"아니다" 싶으면 아닙니다',
+        '익숙한 불편함을 점검해보세요',
+        '갑자기 떠오른 이름에 안부를',
+        '꿈이 알려주는 것이 있습니다',
+        '작은 떨림은 신호입니다',
+        '평온함도 직관의 답입니다'
+      ]}
+    ],
+    proverbs: [
+      '물은 가장 낮은 곳을 흐른다',
+      '부드러운 것이 단단한 것을 이긴다',
+      '깊을수록 잔잔하다',
+      '결국 바다로 간다',
+      '가장 강한 것은 부드러움이다'
+    ]
+  },
+  '火': {
+    hanja: '火', name: '화 · 불', domain: '열정과 주의', color: '#D33D2A',
+    range: [60, 95],
+    fields: [
+      { label: '열정의 방향', pool: [
+        '미뤄둔 일에 불을 지펴보세요',
+        '좋아하는 일에 시간을 쓰세요',
+        '한 가지에 집중할 만한 날',
+        '작은 도전이 어울립니다',
+        '묵혀둔 아이디어를 꺼내보세요',
+        '잊고 있던 꿈을 다시 들여다보세요',
+        '짧고 강한 집중이 효과적',
+        '표현하고 싶은 마음을 억누르지 마세요',
+        '시작이 가장 큰 일',
+        '행동이 답입니다'
+      ]},
+      { label: '조심할 것', pool: [
+        '욱하는 마음을 한 번 누르세요',
+        '무리한 약속을 조심',
+        '빠른 결정보다 한 박자 쉼표',
+        '큰 목소리보다 정확한 말',
+        '충동구매를 조심',
+        '과식·과음을 피하기',
+        '운전이 거칠어지지 않게',
+        '작은 갈등에 큰 반응 금물',
+        '무리한 운동은 주의',
+        '이메일 보내기 전 한 번 더'
+      ]}
+    ],
+    proverbs: [
+      '불은 다스리는 자의 친구다',
+      '열정은 방향이 있어야 빛난다',
+      '끓는 마음을 잠시 식혀라',
+      '작은 불씨도 큰 불이 된다',
+      '식기 전에 움직여라'
+    ]
+  }
+};
+
+const COLORS_POOL = ['빨강','주황','노랑','초록','파랑','남색','보라','흰색','분홍','황금','은빛','하늘색'];
+const DIRS_POOL = ['동쪽','서쪽','남쪽','북쪽','동남쪽','서남쪽','동북쪽','서북쪽'];
+
+const days = ['일','월','화','수','목','금','토'];
+const today = new Date();
+document.getElementById('date').textContent =
+  `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 ${days[today.getDay()]}요일`;
+
+let currentCards = [];
+let currentPicked = null;
+let currentResult = null;
+
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function shuffleAndPick(n) {
+  const keys = Object.keys(CARDS);
+  for (let i = keys.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [keys[i], keys[j]] = [keys[j], keys[i]];
+  }
+  return keys.slice(0, n);
+}
+
+function stars(score) {
+  if (score >= 90) return '★★★★★';
+  if (score >= 80) return '★★★★☆';
+  if (score >= 70) return '★★★☆☆';
+  if (score >= 60) return '★★☆☆☆';
+  return '★☆☆☆☆';
+}
+function tierName(score) {
+  if (score >= 90) return '대길';
+  if (score >= 80) return '길';
+  if (score >= 70) return '소길';
+  if (score >= 60) return '평';
+  return '소소';
+}
+
+function generate(key) {
+  const c = CARDS[key];
+  const [lo, hi] = c.range;
+  const score = lo + Math.floor(Math.random() * (hi - lo + 1));
+  const fields = c.fields.map(f => ({ label: f.label, text: pick(f.pool) }));
+  const result = {
+    score,
+    summary: fields[0].text,
+    fields,
+    proverb: pick(c.proverbs)
+  };
+  if (c.lucky) {
+    result.lucky = {
+      color: pick(COLORS_POOL),
+      number: 1 + Math.floor(Math.random() * 9),
+      dir: pick(DIRS_POOL)
+    };
+  }
+  return result;
+}
+
+function renderCards() {
+  const wrap = document.getElementById('cards');
+  wrap.innerHTML = '';
+  currentCards.forEach((key) => {
+    const c = CARDS[key];
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.dataset.key = key;
+    div.innerHTML = `
+      <div class="hanja" style="color:${c.color}">${c.hanja}</div>
+      <div class="label">
+        <span class="ko">${c.name}</span>
+        <span class="en">${c.domain}</span>
+      </div>
+    `;
+    div.addEventListener('click', () => pickCard(key));
+    wrap.appendChild(div);
+  });
+}
+
+function shuffleAndRender() {
+  currentCards = shuffleAndPick(4);
+  currentPicked = null;
+  currentResult = null;
+  renderCards();
+  document.getElementById('result').classList.remove('show');
+}
+
+function pickCard(key) {
+  currentPicked = key;
+  document.querySelectorAll('.card').forEach(c => {
+    if (c.dataset.key === key) c.classList.add('picked');
+    else c.classList.add('faded');
+  });
+  showResult(key);
+}
+
+function rerollCurrent() {
+  if (!currentPicked) return;
+  showResult(currentPicked);
+}
+
+function showResult(key) {
+  const c = CARDS[key];
+  const r = generate(key);
+  currentResult = { card: c, result: r };
+
+  document.getElementById('pickedName').innerHTML =
+    `<span class="ch" style="color:${c.color}">${c.hanja}</span>${c.name}<span class="domain">${c.domain}</span>`;
+  document.getElementById('scoreNum').textContent = r.score;
+  document.getElementById('stars').textContent = stars(r.score);
+  document.getElementById('tier').textContent = tierName(r.score);
+  document.getElementById('summary').textContent = r.summary;
+
+  const fieldsWrap = document.getElementById('fields');
+  fieldsWrap.innerHTML = r.fields.slice(1).map(f => `
+    <div class="field">
+      <div class="field-title">${f.label}</div>
+      <div class="field-text">${f.text}</div>
+    </div>
+  `).join('');
+
+  const luckyWrap = document.getElementById('luckyBlock');
+  if (r.lucky) {
+    luckyWrap.style.display = '';
+    luckyWrap.innerHTML = `
+      <div class="lucky-item"><div class="lucky-label">행운의 색</div><div class="lucky-val">${r.lucky.color}</div></div>
+      <div class="lucky-item"><div class="lucky-label">행운의 숫자</div><div class="lucky-val">${r.lucky.number}</div></div>
+      <div class="lucky-item"><div class="lucky-label">행운의 방향</div><div class="lucky-val">${r.lucky.dir}</div></div>
+    `;
+  } else {
+    luckyWrap.style.display = 'none';
+  }
+
+  document.getElementById('proverbText').textContent = r.proverb;
+
+  const result = document.getElementById('result');
+  result.classList.add('show');
+  setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'start' }), 200);
+}
+
+function resetAll() {
+  shuffleAndRender();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// === Sharing ===
+function buildShareText() {
+  if (currentResult) {
+    const { card, result } = currentResult;
+    return `오늘의 운세 — ${card.hanja} ${card.name} · ${result.score}점 (${tierName(result.score)})\n"${result.summary}"`;
+  }
+  return '오늘의 운세 — 마음 가는 카드 한 장을 골라보세요';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+async function nativeShare() {
+  const url = location.href;
+  const text = buildShareText();
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: '오늘의 운세',
+        text: text,
+        url: url
+      });
+    } catch (e) {
+      // user cancelled — silent
+    }
+  } else {
+    // desktop fallback: copy to clipboard
+    copyLink(document.getElementById('shareCopy'));
+  }
+}
+
+async function copyLink(btn) {
+  const url = location.href;
+  const text = `${buildShareText()}\n${url}`;
+  try {
+    await navigator.clipboard.writeText(text);
+    btn.classList.add('copied');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> 복사됨';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = orig;
+    }, 1800);
+    showToast('링크가 복사되었습니다');
+  } catch (e) {
+    // Fallback: prompt
+    prompt('아래 링크를 복사하세요', url);
+  }
+}
+
+function shareTwitter() {
+  const url = encodeURIComponent(location.href);
+  const text = encodeURIComponent(buildShareText());
+  window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank', 'noopener');
+}
+
+// Hide native share button on desktop where it's not supported
+if (!navigator.share) {
+  // keep button visible but it'll fall back to copy
+}
+
+shuffleAndRender();
+</script>
+</body>
+</html>
