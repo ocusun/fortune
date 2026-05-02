@@ -9,8 +9,8 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="오늘의 나 — 8가지 결로 보는 하루">
 <meta property="og:description" content="그날의 위인과 명언, 그리고 10가지 질문으로 만나는 오늘의 결.">
-<meta property="og:image" content="https://YOUR-DOMAIN.com/today-og.png">
-<meta property="og:url" content="https://YOUR-DOMAIN.com/today/">
+<meta property="og:image" content="https://ocusun.github.io/fortune/today-og.png">
+<meta property="og:url" content="https://ocusun.github.io/fortune/today/">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 
@@ -933,10 +933,30 @@ function pickPrescription(typeKey) {
 
 // =================== 결과 표시 ===================
 function finishQuiz() {
+  // 점수와 응답을 콘솔에 출력 (디버그용)
+  const debugScores = { depho: 0, yugang: 0, yulhwa: 0, pungya: 0, banseok: 0, lyeong: 0, chusuk: 0, chuna: 0 };
+  QUESTIONS.forEach(q => {
+    const ans = answers[q.id];
+    if (ans === undefined || ans === null) return;
+    if (q.type === 'multi') {
+      ans.forEach(idx => Object.entries(q.options[idx].scores).forEach(([k,v]) => { debugScores[k] += v; }));
+    } else {
+      Object.entries(q.options[ans].scores).forEach(([k,v]) => { debugScores[k] += v; });
+    }
+  });
+  console.log('[오늘의 나] 응답:', answers);
+  console.log('[오늘의 나] 점수:', debugScores);
+
   resultType = calculateType();
+  console.log('[오늘의 나] 선택된 유형:', resultType, TYPES[resultType].name);
+
   const t = TYPES[resultType];
+  // 메인·진단 섹션 모두 확실히 숨기고 결과만 보이기
+  document.getElementById('main-section').style.display = 'none';
   document.getElementById('quiz-section').classList.remove('active');
+  document.getElementById('quiz-section').style.display = 'none';
   document.getElementById('result-section').classList.add('active');
+  document.getElementById('result-section').style.display = 'block';
 
   document.getElementById('resultType').textContent = t.name;
   document.getElementById('resultTypeHanja').textContent = t.hanja;
@@ -952,6 +972,8 @@ function finishQuiz() {
 
 function restart() {
   document.getElementById('result-section').classList.remove('active');
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = '';
   document.getElementById('main-section').style.display = '';
   currentQuestion = 0;
   answers = {};
