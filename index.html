@@ -65,7 +65,7 @@
   ======================================== */
   .hero {
     max-width: 1280px; margin: 0 auto; padding: 60px 36px 80px;
-    position: relative; min-height: 86vh;
+    position: relative;
     display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
   }
   .hero-left { position: relative; z-index: 2; }
@@ -655,10 +655,13 @@
   /* === Responsive === */
   @media (max-width: 1024px) {
     .hero {
-      grid-template-columns: 1fr; gap: 60px;
-      padding: 40px 28px 60px; min-height: auto;
+      grid-template-columns: 1fr; gap: 48px;
+      padding: 40px 28px 60px;
     }
     .hero-right { order: -1; }
+    .hero-title { font-size: clamp(48px, 11vw, 88px); }
+    .hero-headline { font-size: clamp(22px, 3.6vw, 30px); }
+    .hero-kr { font-size: 16px; }
     .quote-card { max-width: 100%; transform: none; }
     .quote-card:hover { transform: translateY(-4px); }
     .info-grid { grid-template-columns: 1fr; gap: 40px; }
