@@ -3,677 +3,1078 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>오늘의 나 — 8가지 결로 보는 하루</title>
+<title>Today, Me. — 오늘의 나</title>
 <meta name="description" content="그날의 위인과 명언, 그리고 10가지 질문으로 만나는 오늘의 결.">
 
 <meta property="og:type" content="website">
-<meta property="og:title" content="오늘의 나 — 8가지 결로 보는 하루">
+<meta property="og:title" content="Today, Me. — 오늘의 나">
 <meta property="og:description" content="그날의 위인과 명언, 그리고 10가지 질문으로 만나는 오늘의 결.">
-<meta property="og:image" content="https://ocusun.github.io/fortune/today-og.png">
-<meta property="og:url" content="https://ocusun.github.io/fortune/today/">
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/[email protected]/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
 <style>
   :root {
-    --bg: #F5F1E6;
-    --bg-card: #FFFEF9;
-    --ink: #2C2A24;
-    --ink-soft: #6B655C;
-    --ink-faint: #A39E94;
-    --line: #E5DFD0;
-    --gold: #B8860B;
-    --seal: #B23A48;
-    --accent: #5A6D8A;
+    --paper: #F4EFE6;
+    --paper-warm: #EDE5D5;
+    --ink: #181614;
+    --ink-2: #3A332A;
+    --ink-3: #6E6457;
+    --ink-4: #A89B89;
+    --line: #D8CFBE;
+    --line-soft: #E5DBC8;
+    --coral: #C8503A;
+    --gold: #B8842B;
+    --bg-card: #FBF7EE;
   }
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body {
-    background: var(--bg);
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper); color: var(--ink);
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased; line-height: 1.5; overflow-x: hidden;
+  }
+
+  /* === Stage system === */
+  .stage { display: none; min-height: 100vh; }
+  .stage.is-active { display: block; }
+
+  /* === Top bar === */
+  .top-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 36px 0; max-width: 1280px; margin: 0 auto;
+    font-family: 'EB Garamond', serif; font-size: 13px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-3);
+  }
+  .top-bar .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-style: italic; font-weight: 500; cursor: pointer;
+  }
+  .top-bar .brand::before {
+    content: ''; width: 22px; height: 1px; background: var(--ink-3);
+  }
+  .top-bar .issue { font-variant-numeric: tabular-nums; }
+
+  /* ========================================
+     STAGE 1: HERO / MAIN
+  ======================================== */
+  .hero {
+    max-width: 1280px; margin: 0 auto; padding: 60px 36px 80px;
+    position: relative; min-height: 86vh;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center;
+  }
+  .hero-left { position: relative; z-index: 2; }
+  .hero-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 17px;
+    color: var(--coral); letter-spacing: 0.05em; margin-bottom: 28px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .hero-eyebrow::before { content: '◍'; font-size: 12px; }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-variation-settings: 'opsz' 144, 'SOFT' 50;
+    font-weight: 350; font-size: clamp(56px, 9vw, 130px);
+    line-height: 0.92; letter-spacing: -0.04em; color: var(--ink); margin-bottom: 32px;
+  }
+  .hero-title .em {
+    font-style: italic; font-weight: 300; color: var(--coral);
+    font-variation-settings: 'opsz' 144, 'SOFT' 100;
+  }
+  .hero-title .me {
+    display: block; font-family: 'Fraunces', serif; font-style: italic;
+    font-weight: 300; font-size: 0.85em; margin-top: -0.08em; letter-spacing: -0.05em;
+  }
+
+  /* === Hero headline (강조 메시지) === */
+  .hero-headline {
+    font-family: 'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(26px, 3.4vw, 38px);
+    line-height: 1.25;
+    letter-spacing: -0.025em;
     color: var(--ink);
-    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', sans-serif;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-    line-height: 1.6;
-  }
-  .page { max-width: 720px; margin: 0 auto; padding: 48px 24px 64px; }
-
-  /* === Header === */
-  .header { text-align: center; margin-bottom: 36px; }
-  .title-mini {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 13px; color: var(--ink-faint);
-    letter-spacing: 0.25em; margin-bottom: 6px;
-  }
-  .title {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 32px; font-weight: 500;
-    letter-spacing: 0.1em; margin-bottom: 10px;
-  }
-  .title-mark {
-    display: inline-block; width: 28px; height: 1px;
-    background: var(--ink-faint); margin: 0 12px; vertical-align: middle;
-  }
-  .date {
-    font-size: 14px; color: var(--ink-soft); letter-spacing: 0.05em;
-  }
-
-  /* === Daily Quote Card (top) === */
-  .quote-card {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 36px 28px 30px;
-    margin-bottom: 36px;
-    position: relative;
-  }
-  .quote-card::before {
-    content: ''; position: absolute; inset: 8px;
-    border: 0.5px solid var(--line); border-radius: 2px; pointer-events: none;
-  }
-  .quote-label {
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.3em;
     margin-bottom: 18px;
-  }
-  .quote-context {
-    text-align: center;
-    font-size: 12px;
-    color: var(--ink-soft);
-    letter-spacing: 0.05em;
-    margin-bottom: 8px;
-  }
-  .quote-figure {
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 17px;
-    color: var(--ink);
-    margin-bottom: 24px;
-    letter-spacing: 0.02em;
-  }
-  .quote-text {
-    font-family: 'Noto Serif KR', serif;
-    text-align: center;
-    font-size: 18px;
-    line-height: 1.85;
-    color: var(--ink);
-    padding: 0 8px;
     position: relative;
+    padding-left: 18px;
   }
-  .quote-text::before, .quote-text::after {
-    content: '"';
-    color: var(--ink-faint);
-    font-size: 28px;
-    margin: 0 6px;
+  .hero-headline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.35em; bottom: 0.25em;
+    width: 3px;
+    background: var(--coral);
   }
-  .quote-tags {
-    text-align: center;
-    margin-top: 22px;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.15em;
-  }
-  .quote-tags span {
-    display: inline-block;
-    padding: 2px 10px;
-    border: 0.5px solid var(--line);
-    border-radius: 999px;
-    margin: 0 3px;
+  .hero-headline em {
+    font-style: italic;
+    color: var(--coral);
+    font-weight: 400;
   }
 
-  /* === Diagnostic intro === */
-  .intro {
-    text-align: center;
-    margin-bottom: 28px;
+  .hero-kr {
+    font-family: 'Pretendard Variable', sans-serif; font-weight: 300;
+    font-size: clamp(15px, 1.6vw, 18px); color: var(--ink-3);
+    letter-spacing: -0.01em; margin-bottom: 40px; line-height: 1.7;
   }
-  .intro-text {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 16px;
-    color: var(--ink-soft);
-    line-height: 1.85;
-    margin-bottom: 4px;
+  .hero-kr strong { font-weight: 600; color: var(--ink); }
+
+  .hero-meta {
+    display: flex; align-items: center; gap: 24px;
+    font-family: 'EB Garamond', serif; font-size: 14px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3);
+    margin-bottom: 48px;
   }
-  .intro-sub {
-    font-size: 13px;
-    color: var(--ink-faint);
-    letter-spacing: 0.05em;
+  .hero-meta-item { display: flex; align-items: center; gap: 8px; }
+  .hero-meta-item .num {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 28px;
+    color: var(--ink); line-height: 1; font-weight: 400; letter-spacing: -0.02em;
+  }
+  .hero-meta-divider { width: 1px; height: 32px; background: var(--line); }
+
+  .cta-block { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+  .cta-btn {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 18px 30px 18px 32px; background: var(--ink); color: var(--paper);
+    border: none; border-radius: 999px;
+    font-family: 'Pretendard Variable', sans-serif; font-size: 16px;
+    font-weight: 500; letter-spacing: 0.02em;
+    cursor: pointer; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    position: relative; overflow: hidden;
+  }
+  .cta-btn::before {
+    content: ''; position: absolute; inset: 0; background: var(--coral);
+    border-radius: 999px; transform: translateY(101%);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); z-index: 0;
+  }
+  .cta-btn:hover::before { transform: translateY(0); }
+  .cta-btn > * { position: relative; z-index: 1; }
+  .cta-btn .arrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--paper); color: var(--ink);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .cta-btn:hover .arrow { transform: translateX(4px) rotate(-45deg); }
+  .cta-time { font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px; color: var(--ink-3); }
+
+  .hero-right { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .quote-card {
+    width: 100%; max-width: 460px; background: var(--bg-card);
+    padding: 56px 44px 44px; position: relative; border: 1px solid var(--line-soft);
+    transform: rotate(0.8deg);
+    box-shadow: 0 30px 60px -20px rgba(40, 30, 20, 0.18);
+    transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .quote-card:hover { transform: rotate(0.3deg) translateY(-4px); }
+  .quote-card::before {
+    content: ''; position: absolute; inset: 12px;
+    border: 0.5px solid var(--line); pointer-events: none;
+  }
+  .quote-card::after {
+    content: ''; position: absolute; top: -8px; right: -8px;
+    width: 56px; height: 56px; background: var(--coral);
+    border-radius: 50%; z-index: -1;
+  }
+  .qc-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px;
+    color: var(--coral); letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .qc-eyebrow .line { flex: 1; height: 1px; background: var(--line); }
+  .qc-figure {
+    font-family: 'Fraunces', serif; font-weight: 400; font-size: 26px;
+    color: var(--ink); letter-spacing: -0.02em; margin-bottom: 4px; line-height: 1.15;
+  }
+  .qc-context {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px;
+    color: var(--ink-3); margin-bottom: 28px;
+  }
+  .qc-quote-mark {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 64px;
+    line-height: 0.4; color: var(--coral); margin-bottom: -8px; margin-left: -4px;
+  }
+  .qc-quote {
+    font-family: 'Fraunces', serif; font-weight: 350; font-size: 22px;
+    line-height: 1.45; color: var(--ink); letter-spacing: -0.02em; margin-bottom: 24px;
+  }
+  .qc-tags {
+    display: flex; gap: 6px; flex-wrap: wrap;
+    padding-top: 20px; border-top: 0.5px solid var(--line);
+  }
+  .qc-tag {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 12px;
+    padding: 3px 12px; border: 0.5px solid var(--ink-3); border-radius: 999px;
+    color: var(--ink-3); letter-spacing: 0.04em;
   }
 
-  /* === Start button === */
-  .start-wrap { text-align: center; margin-top: 40px; }
-  .start-btn {
-    display: inline-block;
-    padding: 14px 38px;
-    background: var(--ink);
-    color: var(--bg-card);
-    border: none;
-    border-radius: 3px;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 15px;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.2s;
+  .deco-number {
+    position: absolute; font-family: 'Fraunces', serif; font-weight: 200;
+    color: var(--ink); opacity: 0.04; pointer-events: none; user-select: none;
   }
-  .start-btn:hover {
-    background: var(--accent);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(60, 50, 30, 0.12);
+  .deco-1 { top: 8%; right: -2%; font-size: 320px; line-height: 1; font-style: italic; }
+
+  /* === Info section === */
+  .info-section {
+    max-width: 1280px; margin: 0 auto; padding: 100px 36px;
+    border-top: 1px solid var(--line); position: relative;
   }
-  .start-hint {
-    margin-top: 14px;
-    font-size: 12px;
-    color: var(--ink-faint);
-    letter-spacing: 0.05em;
+  .info-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start; }
+  .info-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px;
+    color: var(--coral); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 16px;
+  }
+  .info-title {
+    font-family: 'Fraunces', serif; font-weight: 350; font-size: 44px;
+    line-height: 1.05; letter-spacing: -0.03em; color: var(--ink);
+  }
+  .info-title em { font-style: italic; color: var(--coral); font-weight: 300; }
+  .steps { display: flex; flex-direction: column; gap: 32px; }
+  .step {
+    display: grid; grid-template-columns: 80px 1fr; gap: 24px;
+    padding: 24px 0; border-top: 1px solid var(--line); align-items: baseline;
+  }
+  .step:last-child { border-bottom: 1px solid var(--line); }
+  .step-num {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+    font-size: 56px; line-height: 1; color: var(--coral); letter-spacing: -0.04em;
+  }
+  .step-content h3 {
+    font-family: 'Fraunces', serif; font-weight: 400; font-size: 24px;
+    color: var(--ink); margin-bottom: 8px; letter-spacing: -0.02em;
+  }
+  .step-content p { font-size: 15px; line-height: 1.7; color: var(--ink-3); max-width: 520px; }
+
+  /* === Types preview grid === */
+  .types-section { max-width: 1280px; margin: 0 auto; padding: 80px 36px 120px; }
+  .types-header {
+    margin-bottom: 60px; display: flex; justify-content: space-between;
+    align-items: end; gap: 40px; flex-wrap: wrap;
+  }
+  .types-header .left { max-width: 600px; }
+  .types-header h2 {
+    font-family: 'Fraunces', serif; font-weight: 350; font-size: 44px;
+    line-height: 1.05; letter-spacing: -0.03em; color: var(--ink);
+  }
+  .types-header h2 em { font-style: italic; color: var(--coral); }
+  .types-header .right {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 16px;
+    color: var(--ink-3); max-width: 320px; line-height: 1.6;
+  }
+  .types-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    background: var(--line); border: 1px solid var(--line);
+  }
+  .type-card {
+    background: var(--paper); padding: 32px 24px 28px;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    cursor: default; position: relative; overflow: hidden;
+  }
+  .type-card:hover { background: var(--bg-card); }
+  .type-card-num {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 13px;
+    color: var(--ink-4); letter-spacing: 0.1em; margin-bottom: 16px;
+  }
+  .type-card-name {
+    font-family: 'Fraunces', serif; font-weight: 400; font-size: 26px;
+    color: var(--ink); letter-spacing: -0.02em; margin-bottom: 4px; line-height: 1.1;
+  }
+  .type-card-hanja {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 14px;
+    color: var(--ink-4); letter-spacing: 0.1em; margin-bottom: 18px;
+  }
+  .type-card-desc { font-size: 13.5px; line-height: 1.6; color: var(--ink-3); min-height: 60px; }
+  .type-card-mark {
+    position: absolute; bottom: 20px; right: 20px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--type-color, var(--coral));
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .type-card:hover .type-card-mark { transform: scale(1.2); }
+
+  /* === Footer === */
+  .footer {
+    max-width: 1280px; margin: 0 auto; padding: 40px 36px 60px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: 'EB Garamond', serif; font-size: 13px;
+    letter-spacing: 0.1em; color: var(--ink-3); text-transform: uppercase;
+  }
+  .footer .center {
+    font-style: italic; font-size: 16px; letter-spacing: 0.3em;
+    color: var(--ink-2); text-transform: none;
   }
 
-  /* === Quiz section === */
-  .quiz {
-    display: none;
+  /* ========================================
+     STAGE 2: QUIZ
+  ======================================== */
+  .quiz-wrap {
+    max-width: 720px; margin: 0 auto; padding: 60px 36px 80px;
+    min-height: calc(100vh - 60px);
+    display: flex; flex-direction: column;
   }
-  .quiz.active { display: block; }
   .quiz-progress {
-    text-align: center;
-    margin-bottom: 24px;
+    margin-bottom: 60px;
+  }
+  .quiz-progress-meta {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 14px;
+    font-family: 'EB Garamond', serif; letter-spacing: 0.1em;
+  }
+  .quiz-progress-num {
+    font-family: 'Fraunces', serif; font-style: italic; font-size: 32px;
+    color: var(--ink); letter-spacing: -0.02em;
+  }
+  .quiz-progress-num .total { color: var(--ink-4); font-size: 20px; }
+  .quiz-progress-label {
+    font-style: italic; font-size: 13px; color: var(--ink-3);
+    text-transform: uppercase;
   }
   .quiz-progress-bar {
-    width: 100%;
-    height: 2px;
-    background: var(--line);
-    border-radius: 2px;
-    overflow: hidden;
-    margin-bottom: 12px;
+    width: 100%; height: 1px; background: var(--line); position: relative;
   }
   .quiz-progress-fill {
-    height: 100%;
-    background: var(--ink-soft);
-    transition: width 0.4s ease;
+    position: absolute; top: 0; left: 0; height: 100%;
+    background: var(--coral); transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .quiz-progress-text {
-    font-size: 12px;
-    color: var(--ink-faint);
-    letter-spacing: 0.15em;
+
+  .question-block {
+    flex: 1;
+    animation: questionIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
-  .question {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 32px 28px;
-    margin-bottom: 18px;
-    position: relative;
+  @keyframes questionIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .question::before {
-    content: ''; position: absolute; inset: 8px;
-    border: 0.5px solid var(--line); border-radius: 2px; pointer-events: none;
-  }
-  .q-num {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 12px;
-    color: var(--ink-faint);
-    letter-spacing: 0.25em;
-    margin-bottom: 10px;
+
+  .q-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px;
+    color: var(--coral); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 20px;
   }
   .q-text {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 18px;
-    color: var(--ink);
-    margin-bottom: 6px;
-    line-height: 1.55;
+    font-family: 'Fraunces', serif; font-weight: 350;
+    font-size: clamp(28px, 4.5vw, 42px); line-height: 1.2;
+    letter-spacing: -0.03em; color: var(--ink); margin-bottom: 12px;
   }
-  .q-hint {
-    font-size: 12px;
-    color: var(--ink-faint);
-    margin-bottom: 22px;
-    letter-spacing: 0.02em;
-  }
-  .q-options {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .q-options.grid-2 { display: grid; grid-template-columns: 1fr 1fr; }
-  .q-options.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); }
+  .q-hint { font-size: 14px; color: var(--ink-3); margin-bottom: 36px; }
+
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
+  .q-options.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .q-options.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+
   .q-option {
-    padding: 12px 16px;
-    background: transparent;
-    border: 0.5px solid var(--line);
-    border-radius: 3px;
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-align: left;
-    line-height: 1.5;
+    display: flex; align-items: center; gap: 14px;
+    padding: 18px 22px; background: var(--bg-card);
+    border: 1px solid var(--line-soft); border-radius: 4px;
+    color: var(--ink); font-family: inherit; font-size: 15.5px;
+    cursor: pointer; transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+    text-align: left; line-height: 1.4; position: relative;
   }
   .q-option:hover {
-    background: rgba(184, 134, 11, 0.05);
-    border-color: var(--ink-faint);
+    border-color: var(--ink-3); transform: translateX(4px);
+    background: #FCF8EF;
+  }
+  .q-option .marker {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 1px solid var(--line); flex-shrink: 0;
+    transition: all 0.25s; position: relative;
+  }
+  .q-option .marker::after {
+    content: ''; position: absolute; inset: 4px;
+    background: var(--coral); border-radius: 50%;
+    transform: scale(0); transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   .q-option.selected {
-    background: var(--ink);
-    color: var(--bg-card);
-    border-color: var(--ink);
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
   }
+  .q-option.selected .marker { border-color: var(--paper); }
+  .q-option.selected .marker::after { background: var(--paper); transform: scale(1); }
   .q-multi-hint {
-    font-size: 11px;
-    color: var(--ink-faint);
-    margin-top: 12px;
-    text-align: right;
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 13px; color: var(--ink-4); margin-top: 14px; text-align: right;
   }
+
   .quiz-nav {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line);
   }
   .nav-btn {
-    padding: 10px 24px;
-    background: transparent;
-    border: 0.5px solid var(--ink-soft);
-    border-radius: 3px;
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: all 0.2s;
+    padding: 12px 24px; background: transparent; border: 1px solid var(--ink-3);
+    border-radius: 999px; color: var(--ink); font-family: inherit;
+    font-size: 14px; letter-spacing: 0.02em;
+    cursor: pointer; transition: all 0.25s;
   }
-  .nav-btn:hover { background: var(--ink); color: var(--bg-card); }
+  .nav-btn:hover { background: var(--ink); color: var(--paper); }
   .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .nav-btn:disabled:hover { background: transparent; color: var(--ink); }
   .nav-btn.primary {
-    background: var(--ink);
-    color: var(--bg-card);
+    background: var(--ink); color: var(--paper); border-color: var(--ink);
+    padding: 12px 28px;
+    display: inline-flex; align-items: center; gap: 10px;
   }
-  .nav-btn.primary:hover { background: var(--accent); }
+  .nav-btn.primary:hover { background: var(--coral); border-color: var(--coral); }
+  .nav-btn.primary .arrow {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--paper); color: var(--ink); font-size: 11px;
+    transition: transform 0.25s;
+  }
+  .nav-btn.primary:hover .arrow { transform: translateX(2px); }
 
-  /* === Result === */
-  .result { display: none; }
-  .result.active { display: block; }
-  .result-card {
-    background: var(--bg-card);
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    padding: 40px 28px 28px;
-    margin-bottom: 18px;
+  /* ========================================
+     STAGE 3: RESULT
+  ======================================== */
+  .result-wrap {
+    max-width: 980px; margin: 0 auto; padding: 60px 36px 80px;
+  }
+
+  .result-hero {
+    text-align: center; padding: 40px 0 60px;
     position: relative;
   }
-  .result-card::before {
-    content: ''; position: absolute; inset: 8px;
-    border: 0.5px solid var(--line); border-radius: 2px; pointer-events: none;
+  .result-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px;
+    color: var(--coral); letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 18px;
+    display: flex; align-items: center; justify-content: center; gap: 14px;
   }
-  .result-label {
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.3em;
-    margin-bottom: 14px;
+  .result-eyebrow::before, .result-eyebrow::after {
+    content: ''; width: 32px; height: 1px; background: var(--coral);
   }
-  .result-type {
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 32px;
-    font-weight: 500;
-    color: var(--ink);
-    letter-spacing: 0.05em;
-    margin-bottom: 4px;
+  .result-type-name {
+    font-family: 'Fraunces', serif; font-weight: 350;
+    font-size: clamp(56px, 10vw, 110px); line-height: 0.95;
+    letter-spacing: -0.04em; color: var(--ink); margin-bottom: 8px;
+  }
+  .result-type-name .em {
+    font-style: italic; color: var(--type-color, var(--coral));
+    font-weight: 300;
+  }
+  .result-type-en {
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 22px; color: var(--ink-3); letter-spacing: 0.05em; margin-bottom: 24px;
   }
   .result-type-hanja {
-    text-align: center;
-    font-family: 'Noto Serif KR', serif;
-    font-size: 14px;
-    color: var(--ink-faint);
-    letter-spacing: 0.3em;
-    margin-bottom: 24px;
+    font-family: 'Fraunces', serif; font-size: 16px;
+    color: var(--type-color, var(--ink-3)); letter-spacing: 0.4em;
+    margin-bottom: 36px; opacity: 0.6;
+  }
+
+  .result-desc-wrap {
+    max-width: 600px; margin: 0 auto; padding: 32px 0;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
   }
   .result-desc {
-    font-family: 'Noto Serif KR', serif;
-    text-align: center;
-    font-size: 16px;
-    line-height: 1.9;
-    color: var(--ink);
-    margin: 0 12px 24px;
-    padding-top: 16px;
-    border-top: 0.5px solid var(--line);
-  }
-  .result-section {
-    padding-top: 20px;
-    margin-top: 20px;
-    border-top: 0.5px solid var(--line);
-  }
-  .result-section-label {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.25em;
-    text-align: center;
-    margin-bottom: 12px;
-  }
-  .result-prescription {
-    font-family: 'Noto Serif KR', serif;
-    text-align: center;
-    font-size: 15px;
-    line-height: 1.85;
-    color: var(--ink-soft);
-    padding: 0 12px;
-  }
-  .result-quote {
-    text-align: center;
-    margin-top: 8px;
-  }
-  .result-quote-text {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 16px;
-    line-height: 1.85;
-    color: var(--ink);
-    margin-bottom: 12px;
-    padding: 0 8px;
-  }
-  .result-quote-text::before, .result-quote-text::after {
-    content: '"';
-    color: var(--ink-faint);
-    font-size: 22px;
-    margin: 0 4px;
-  }
-  .result-quote-attr {
-    font-size: 12px;
-    color: var(--ink-faint);
-    letter-spacing: 0.1em;
+    font-family: 'Fraunces', serif; font-weight: 350;
+    font-size: clamp(18px, 2.4vw, 22px); line-height: 1.7;
+    color: var(--ink-2); letter-spacing: -0.01em;
   }
 
-  .actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 24px;
+  /* Result content sections */
+  .result-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 40px; margin-top: 80px;
+  }
+
+  .result-block {
+    background: var(--bg-card); border: 1px solid var(--line-soft);
+    padding: 36px 32px; position: relative;
+  }
+  .result-block::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 0.5px solid var(--line); pointer-events: none;
+  }
+  .result-block-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 12px;
+    color: var(--coral); letter-spacing: 0.2em; text-transform: uppercase;
+    margin-bottom: 18px;
+  }
+  .result-block-title {
+    font-family: 'Fraunces', serif; font-weight: 400; font-size: 22px;
+    color: var(--ink); letter-spacing: -0.02em; margin-bottom: 16px; line-height: 1.3;
+  }
+  .result-block-text {
+    font-family: 'Fraunces', serif; font-size: 16px; font-weight: 350;
+    line-height: 1.65; color: var(--ink-2);
+  }
+  .result-block-attr {
+    margin-top: 16px; padding-top: 16px; border-top: 0.5px solid var(--line);
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 13px; color: var(--ink-3); letter-spacing: 0.05em;
+  }
+
+  .result-secondary {
+    margin-top: 60px; padding: 28px;
+    text-align: center;
+    background: transparent; border: 1px dashed var(--line);
+    font-size: 14px; color: var(--ink-3); letter-spacing: 0.04em;
+  }
+  .result-secondary strong {
+    font-family: 'Fraunces', serif; font-weight: 400; color: var(--ink);
+    font-size: 16px; letter-spacing: -0.01em;
+  }
+
+  /* === Share Card === */
+  .share-section {
+    margin-top: 80px; padding-top: 60px;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .share-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic; font-size: 14px;
+    color: var(--coral); letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .share-title {
+    font-family: 'Fraunces', serif; font-weight: 350; font-size: 32px;
+    color: var(--ink); letter-spacing: -0.02em; margin-bottom: 36px;
+  }
+
+  /* SNS 공유 카드 — 1:1 비율, 캡처용 */
+  .share-card-frame {
+    max-width: 480px; margin: 0 auto 32px;
+    position: relative;
+  }
+  .share-card {
+    aspect-ratio: 1 / 1;
+    background: linear-gradient(135deg,
+      var(--type-color, var(--coral)) 0%,
+      var(--type-color-2, var(--coral)) 100%);
+    color: white; border-radius: 16px; padding: 48px 40px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    position: relative; overflow: hidden;
+    box-shadow: 0 30px 60px -20px rgba(40, 30, 20, 0.25);
+  }
+  .share-card::before {
+    content: ''; position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0,0,0,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .share-card-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    position: relative; z-index: 1;
+  }
+  .share-card-brand {
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 16px; letter-spacing: 0.1em;
+    opacity: 0.92;
+  }
+  .share-card-brand strong { font-weight: 600; }
+  .share-card-date {
+    font-family: 'EB Garamond', serif; font-size: 12px;
+    letter-spacing: 0.15em; opacity: 0.7;
+    text-transform: uppercase;
+  }
+  .share-card-middle {
+    position: relative; z-index: 1;
+    text-align: left;
+  }
+  .share-card-eyebrow {
+    font-family: 'EB Garamond', serif; font-style: italic;
+    font-size: 14px; letter-spacing: 0.15em;
+    text-transform: uppercase; opacity: 0.85; margin-bottom: 10px;
+  }
+  .share-card-name {
+    font-family: 'Fraunces', serif; font-weight: 400;
+    font-size: clamp(38px, 9vw, 52px); line-height: 1; letter-spacing: -0.03em;
+    margin-bottom: 6px;
+  }
+  .share-card-hanja {
+    font-family: 'Fraunces', serif; font-style: italic;
+    font-size: 16px; letter-spacing: 0.3em; opacity: 0.7;
+  }
+  .share-card-quote {
+    font-family: 'Fraunces', serif; font-weight: 350; font-style: italic;
+    font-size: 18px; line-height: 1.55; opacity: 0.95;
+    position: relative; z-index: 1;
+    padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.25);
+  }
+  .share-card-quote::before {
+    content: '"'; font-style: italic; font-size: 36px;
+    line-height: 0; vertical-align: -18px; margin-right: 4px;
+  }
+
+  .share-actions {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 24px;
+  }
+  .share-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 22px; background: transparent;
+    border: 1px solid var(--ink-3); border-radius: 999px;
+    color: var(--ink); font-family: inherit; font-size: 14px;
+    cursor: pointer; transition: all 0.25s;
+  }
+  .share-btn:hover { background: var(--ink); color: var(--paper); }
+  .share-btn svg { width: 14px; height: 14px; }
+
+  .result-actions {
+    display: flex; justify-content: center; gap: 12px;
+    margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--line);
     flex-wrap: wrap;
   }
-  .btn {
-    padding: 10px 22px;
-    background: transparent;
-    border: 0.5px solid var(--ink-soft);
-    border-radius: 3px;
-    color: var(--ink);
-    font-family: inherit;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    transition: all 0.2s;
+  .result-actions .btn {
+    padding: 14px 28px; background: transparent;
+    border: 1px solid var(--ink); border-radius: 999px;
+    color: var(--ink); font-family: inherit; font-size: 14px;
+    cursor: pointer; transition: all 0.25s;
   }
-  .btn:hover { background: var(--ink); color: var(--bg-card); }
-
-  .footer {
-    text-align: center;
-    margin-top: 44px;
-    font-size: 11px;
-    color: var(--ink-faint);
-    letter-spacing: 0.2em;
-  }
+  .result-actions .btn:hover { background: var(--ink); color: var(--paper); }
+  .result-actions .btn.primary { background: var(--ink); color: var(--paper); }
+  .result-actions .btn.primary:hover { background: var(--coral); border-color: var(--coral); }
 
   /* === Toast === */
   .toast {
-    position: fixed;
-    top: 24px;
-    left: 50%;
+    position: fixed; top: 24px; left: 50%;
     transform: translateX(-50%) translateY(-80px);
-    background: var(--ink);
-    color: var(--bg-card);
-    padding: 10px 22px;
-    border-radius: 999px;
-    font-size: 13px;
-    letter-spacing: 0.05em;
-    opacity: 0;
-    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    pointer-events: none;
-    z-index: 100;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    background: var(--ink); color: var(--paper);
+    padding: 12px 24px; border-radius: 999px;
+    font-size: 14px; letter-spacing: 0.02em;
+    opacity: 0; transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    pointer-events: none; z-index: 1000;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  @media (max-width: 540px) {
-    .page { padding: 32px 16px 48px; }
-    .title { font-size: 24px; }
-    .quote-card { padding: 28px 18px 22px; }
-    .quote-text { font-size: 16px; }
-    .question { padding: 24px 18px; }
-    .q-text { font-size: 16px; }
+  /* === Animations === */
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .anim-1 { animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s both; }
+  .anim-2 { animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.18s both; }
+  .anim-3 { animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.32s both; }
+  .anim-4 { animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.46s both; }
+  .anim-5 { animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.6s both; }
+
+  /* === Responsive === */
+  @media (max-width: 1024px) {
+    .hero {
+      grid-template-columns: 1fr; gap: 60px;
+      padding: 40px 28px 60px; min-height: auto;
+    }
+    .hero-right { order: -1; }
+    .quote-card { max-width: 100%; transform: none; }
+    .quote-card:hover { transform: translateY(-4px); }
+    .info-grid { grid-template-columns: 1fr; gap: 40px; }
+    .types-grid { grid-template-columns: repeat(2, 1fr); }
+    .result-grid { grid-template-columns: 1fr; gap: 20px; }
+    .deco-1 { display: none; }
+  }
+  @media (max-width: 640px) {
+    .top-bar { padding: 20px 20px 0; font-size: 11px; }
+    .top-bar .brand::before { width: 14px; }
+    .hero { padding: 32px 20px 50px; }
+    .hero-title { font-size: 64px; }
+    .hero-headline { font-size: 22px; padding-left: 14px; margin-bottom: 14px; }
+    .hero-headline::before { width: 2px; }
+    .hero-kr { font-size: 14.5px; line-height: 1.65; }
+    .hero-meta { gap: 16px; flex-wrap: wrap; }
+    .hero-meta-item .num { font-size: 22px; }
+    .hero-meta-divider { display: none; }
+    .quote-card { padding: 36px 24px 28px; }
+    .qc-quote { font-size: 18px; }
+    .info-section { padding: 60px 20px; }
+    .info-title, .types-header h2 { font-size: 32px; }
+    .types-section { padding: 50px 20px 80px; }
+    .types-grid { grid-template-columns: 1fr; }
+    .step-num { font-size: 40px; }
+    .footer { flex-direction: column; gap: 12px; padding: 30px 20px 40px; text-align: center; }
+
+    .quiz-wrap { padding: 32px 20px 60px; }
+    .quiz-progress { margin-bottom: 36px; }
     .q-options.grid-3 { grid-template-columns: 1fr 1fr; }
-    .result-card { padding: 30px 18px 22px; }
-    .result-type { font-size: 26px; }
+    .quiz-nav { margin-top: 32px; }
+
+    .result-wrap { padding: 32px 20px 60px; }
+    .result-hero { padding: 20px 0 36px; }
+    .result-grid { margin-top: 48px; }
+    .share-card { padding: 32px 24px; }
+    .share-card-name { font-size: 38px; }
   }
 </style>
 </head>
 <body>
 <div class="toast" id="toast">알림</div>
 
-<div class="page">
-  <!-- Section 1: 메인 (위인 + 명언 + 진단 시작) -->
-  <div id="main-section">
-    <div class="header">
-      <div class="title-mini">— TODAY ME —</div>
-      <h1 class="title">오늘의 나</h1>
-      <div class="date" id="date"></div>
-    </div>
+<header class="top-bar">
+  <div class="brand" onclick="goHome()">Today, Me.</div>
+  <div class="issue" id="topDate">— · —</div>
+</header>
 
-    <div class="quote-card">
-      <div class="quote-label">오 늘 의 한 마 디</div>
-      <div class="quote-context" id="quoteContext">—</div>
-      <div class="quote-figure" id="quoteFigure">—</div>
-      <div class="quote-text" id="quoteText">—</div>
-      <div class="quote-tags" id="quoteTags"></div>
-    </div>
+<!-- ========================================
+     STAGE 1: HERO
+======================================== -->
+<div class="stage is-active" id="stage-main">
+  <section class="hero">
+    <div class="deco-number deco-1">8</div>
+    <div class="hero-left">
+      <div class="hero-eyebrow anim-1">A daily diagnostic for your inner weather</div>
+      <h1 class="hero-title anim-2">
+        Today,<br>
+        <span class="em">Me.</span>
+        <span class="me">오늘의 나</span>
+      </h1>
 
-    <div class="intro">
-      <div class="intro-text">10가지 질문으로<br>오늘의 나의 결을 만나보세요</div>
-      <div class="intro-sub">3분 정도 소요됩니다</div>
-    </div>
+      <p class="hero-headline anim-3">
+        오늘의 기분, <em>정확히 짚어드립니다.</em>
+      </p>
+      <p class="hero-kr anim-3">
+        색깔·취향·언어로 풀어보는 마음의 결 진단.<br>
+        <strong>10가지 응답</strong>으로 만나는 <strong>8가지 결</strong>,<br>
+        매일 달라지는 오늘의 당신.
+      </p>
 
-    <div class="start-wrap">
-      <button class="start-btn" onclick="startQuiz()">진 단 시 작</button>
-      <div class="start-hint">8가지 결 중 오늘의 당신은</div>
+      <div class="hero-meta anim-4">
+        <div class="hero-meta-item">
+          <span class="num">10</span><span>signals</span>
+        </div>
+        <span class="hero-meta-divider"></span>
+        <div class="hero-meta-item">
+          <span class="num">8</span><span>types</span>
+        </div>
+        <span class="hero-meta-divider"></span>
+        <div class="hero-meta-item">
+          <span class="num">∞</span><span>variations</span>
+        </div>
+      </div>
+      <div class="cta-block anim-5">
+        <button class="cta-btn" onclick="startQuiz()">
+          <span>지금 진단 받기</span>
+          <span class="arrow">↗</span>
+        </button>
+        <span class="cta-time">3 min · 무료 · 회원가입 없음</span>
+      </div>
     </div>
-  </div>
+    <div class="hero-right">
+      <article class="quote-card anim-3">
+        <div class="qc-eyebrow">
+          <span>Today's voice</span>
+          <span class="line"></span>
+          <span id="qcDate">—</span>
+        </div>
+        <h2 class="qc-figure" id="qcFigure">—</h2>
+        <p class="qc-context" id="qcContext">—</p>
+        <div class="qc-quote-mark">"</div>
+        <p class="qc-quote" id="qcQuote">—</p>
+        <div class="qc-tags" id="qcTags"></div>
+      </article>
+    </div>
+  </section>
 
-  <!-- Section 2: 진단 -->
-  <div class="quiz" id="quiz-section">
+  <section class="info-section">
+    <div class="info-grid">
+      <div>
+        <div class="info-eyebrow">How it works</div>
+        <h2 class="info-title">가벼운 질문, <em>섬세한 결과</em></h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h3>그날의 한마디를 만나요</h3>
+            <p>매일 다른 위인의 명언이 그날 짧은 사색의 시작점이 됩니다. 5월 2일이면 다 빈치, 5월 15일이면 세종대왕.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h3>10가지 질문에 답해요</h3>
+            <p>지금 기분, 끌리는 색, 좋아하는 영화, 요즘 떠오르는 단어 — 가벼운 질문 10개로 오늘의 결을 만나봅니다. 매번 다른 보기가 등장해 여러 번 풀어도 새로운 경험.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h3>오늘의 결을 받아요</h3>
+            <p>8가지 결 중 오늘의 당신과 가장 닮은 하나. 짧은 처방과 함께, 친구에게 보낼 카드도 함께 받아요.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="types-section">
+    <div class="types-header">
+      <div class="left">
+        <h2>당신은 오늘<br>어떤 <em>결</em>인가요?</h2>
+      </div>
+      <div class="right">
+        한국의 자연을 닮은 여덟 가지 결.<br>
+        매일 다르게 흘러가는 마음의 풍경.
+      </div>
+    </div>
+    <div class="types-grid" id="typesGrid"></div>
+  </section>
+
+  <footer class="footer">
+    <div>© Today, Me · MirJournal</div>
+    <div class="center">深 流 烈 風 盤 黎 秋 春</div>
+    <div>v3.0 — Editorial</div>
+  </footer>
+</div>
+
+<!-- ========================================
+     STAGE 2: QUIZ
+======================================== -->
+<div class="stage" id="stage-quiz">
+  <div class="quiz-wrap">
     <div class="quiz-progress">
+      <div class="quiz-progress-meta">
+        <div class="quiz-progress-num">
+          <span id="progressCurrent">1</span><span class="total"> / 10</span>
+        </div>
+        <div class="quiz-progress-label" id="progressLabel">Question</div>
+      </div>
       <div class="quiz-progress-bar">
         <div class="quiz-progress-fill" id="progressFill"></div>
       </div>
-      <div class="quiz-progress-text" id="progressText">1 / 10</div>
     </div>
-    <div class="question" id="questionBox">
-      <!-- Filled by JS -->
-    </div>
+    <div class="question-block" id="questionBlock"></div>
     <div class="quiz-nav">
-      <button class="nav-btn" id="prevBtn" onclick="prevQuestion()">이전</button>
-      <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">다음</button>
+      <button class="nav-btn" id="prevBtn" onclick="prevQuestion()">← 이전</button>
+      <button class="nav-btn primary" id="nextBtn" onclick="nextQuestion()">
+        <span id="nextLabel">다음</span>
+        <span class="arrow">→</span>
+      </button>
     </div>
   </div>
+</div>
 
-  <!-- Section 3: 결과 -->
-  <div class="result" id="result-section">
-    <div class="result-card">
-      <div class="result-label">오 늘 의 결</div>
-      <div class="result-type" id="resultType">—</div>
-      <div class="result-type-hanja" id="resultTypeHanja">—</div>
-      <div class="result-desc" id="resultDesc">—</div>
-
-      <div class="result-section">
-        <div class="result-section-label">오 늘 의 처 방</div>
-        <div class="result-prescription" id="resultPrescription">—</div>
+<!-- ========================================
+     STAGE 3: RESULT
+======================================== -->
+<div class="stage" id="stage-result">
+  <div class="result-wrap">
+    <div class="result-hero">
+      <div class="result-eyebrow">Today, you are</div>
+      <h1 class="result-type-name" id="resTypeName">—</h1>
+      <div class="result-type-en" id="resTypeEn">—</div>
+      <div class="result-type-hanja" id="resTypeHanja">—</div>
+      <div class="result-desc-wrap">
+        <p class="result-desc" id="resDesc">—</p>
       </div>
+    </div>
 
-      <div class="result-section">
-        <div class="result-section-label">오 늘 의 한 마 디</div>
-        <div class="result-quote">
-          <div class="result-quote-text" id="resultQuoteText">—</div>
-          <div class="result-quote-attr" id="resultQuoteAttr">—</div>
+    <div class="result-grid">
+      <div class="result-block">
+        <div class="result-block-eyebrow">Today's prescription</div>
+        <h3 class="result-block-title">오늘의 처방</h3>
+        <p class="result-block-text" id="resPrescription">—</p>
+      </div>
+      <div class="result-block">
+        <div class="result-block-eyebrow">Today's voice</div>
+        <h3 class="result-block-title" id="resQuoteFigure">—</h3>
+        <p class="result-block-text" id="resQuoteText">—</p>
+        <p class="result-block-attr" id="resQuoteAttr">—</p>
+      </div>
+    </div>
+
+    <div class="result-secondary" id="resSecondary"></div>
+
+    <!-- SNS 공유 카드 -->
+    <div class="share-section">
+      <div class="share-eyebrow">Share your today</div>
+      <h2 class="share-title">친구에게 보낼 카드</h2>
+
+      <div class="share-card-frame" id="shareCardFrame">
+        <div class="share-card" id="shareCard">
+          <div class="share-card-top">
+            <div class="share-card-brand">Today, <strong>Me.</strong></div>
+            <div class="share-card-date" id="scDate">—</div>
+          </div>
+          <div class="share-card-middle">
+            <div class="share-card-eyebrow">Today, you are</div>
+            <div class="share-card-name" id="scName">—</div>
+            <div class="share-card-hanja" id="scHanja">—</div>
+          </div>
+          <div class="share-card-quote" id="scQuote">—</div>
         </div>
       </div>
 
-      <div class="actions">
-        <button class="btn" onclick="restart()">처음으로</button>
-        <button class="btn" onclick="copyResult()">결과 복사</button>
+      <div class="share-actions">
+        <button class="share-btn" onclick="copyResult()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          결과 복사
+        </button>
+        <button class="share-btn" onclick="shareNative()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+          공유
+        </button>
+        <button class="share-btn" onclick="alert('카드 캡처는 모바일·PC에서 스크린샷 기능을 사용해주세요.\\n(곧 카드 다운로드 기능도 추가됩니다)')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          카드 저장
+        </button>
       </div>
     </div>
-  </div>
 
-  <div class="footer">深湖 · 流江 · 烈火 · 風野 · 盤石 · 黎明 · 秋熟 · 春芽</div>
+    <div class="result-actions">
+      <button class="btn" onclick="restart()">처음으로</button>
+      <button class="btn primary" onclick="restart(true)">다시 진단하기 ↻</button>
+    </div>
+  </div>
 </div>
 
 <script>
-// =================== 데이터 ===================
+const APP_VERSION = '3.0';
+console.log('[Today, Me] v' + APP_VERSION);
+
+// ============================================================
+// 데이터
+// ============================================================
+
 const QUOTES_DB = {
-  "5-1":  { figure: "근로자의 날", country: "한국", context: "노동의 가치를 기리는 날", quote: "땀 흘려 일하는 손이 가장 아름답다.", tags: ["노동","성실","일상"] },
-  "5-2":  { figure: "레오나르도 다 빈치", country: "이탈리아", context: "1519년 별세", quote: "경험은 결코 잘못되지 않는다. 잘못된 것은 우리의 판단이다.", tags: ["관조","성숙","직관"] },
-  "5-3":  { figure: "마키아벨리", country: "이탈리아", context: "1469년 출생", quote: "운명은 우리 행동의 절반을 지배할 뿐, 나머지 절반은 우리 손에 남겨둔다.", tags: ["주체성","행동","선택"] },
-  "5-4":  { figure: "혜강 최한기", country: "한국", context: "조선 후기 실학자", quote: "배움이 멈추는 곳에서 사람도 멈춘다.", tags: ["배움","성장","탐구"] },
-  "5-5":  { figure: "방정환 — 어린이날", country: "한국", context: "1923년 어린이날 제정", quote: "어린이를 내려다보지 마시고 쳐다보아 주시오.", tags: ["존중","순수","성장"] },
-  "5-6":  { figure: "지그문트 프로이트", country: "오스트리아", context: "1856년 출생", quote: "꿈은 무의식에 이르는 왕도이다.", tags: ["내면","탐구","직관"] },
-  "5-7":  { figure: "표트르 차이콥스키", country: "러시아", context: "1840년 출생", quote: "영감은 게으른 자를 찾아오지 않는다.", tags: ["꾸준함","창조","노력"] },
-  "5-8":  { figure: "어버이날", country: "한국", context: "부모님께 감사하는 날", quote: "부모는 자식의 첫 하늘이고, 자식은 부모의 마지막 노을이다.", tags: ["가족","감사","관계"] },
-  "5-9":  { figure: "프리드리히 실러", country: "독일", context: "1805년 별세", quote: "진정으로 아름다운 것은 자유로운 것이다.", tags: ["자유","아름다움","본질"] },
-  "5-10": { figure: "이순신 장군", country: "한국", context: "임진왜란의 영웅", quote: "죽고자 하면 살 것이요, 살고자 하면 죽을 것이다.", tags: ["용기","결단","위기"] },
-  "5-11": { figure: "리하르트 파인만", country: "미국", context: "1918년 출생", quote: "스스로를 속이지 말라. 당신이야말로 가장 속기 쉬운 사람이다.", tags: ["정직","성찰","탐구"] },
-  "5-12": { figure: "플로렌스 나이팅게일", country: "영국", context: "1820년 출생, 국제 간호사의 날", quote: "내가 성공한 것은 단 한 번도 변명하지 않았기 때문이다.", tags: ["헌신","책임","성실"] },
-  "5-13": { figure: "한용운", country: "한국", context: "독립운동가·시인", quote: "님은 갔습니다. 그러나 나는 님을 보내지 아니하였습니다.", tags: ["기다림","사랑","성숙"] },
-  "5-14": { figure: "스승의 가르침을 기리며", country: "한국", context: "스승의 날 무렵", quote: "가르치는 자는 영원히 배우는 자이다.", tags: ["배움","겸손","성장"] },
-  "5-15": { figure: "세종대왕", country: "한국", context: "1397년 탄생일, 스승의 날", quote: "백성을 가르치는 바른 소리. 모든 사람이 쉽게 익혀 날마다 쓰기에 편하게 하고자 함이라.", tags: ["애민","지혜","창조"] },
-  "5-16": { figure: "정약용", country: "한국", context: "조선 실학자", quote: "글을 읽되 그 속의 사람을 읽으라.", tags: ["배움","통찰","성숙"] },
-  "5-17": { figure: "에릭 사티", country: "프랑스", context: "1866년 출생", quote: "내가 어렸을 때 사람들은 내게 말했다. 너는 자라면 알게 될 거야. 나는 자랐고, 아무것도 알지 못한다.", tags: ["성숙","겸손","관조"] },
-  "5-18": { figure: "5·18 광주 민주화운동", country: "한국", context: "1980년", quote: "그들은 졌으되 그들이 옳았다.", tags: ["용기","정의","기억"] },
-  "5-19": { figure: "맬컴 엑스", country: "미국", context: "1925년 출생", quote: "내일을 위해 가장 잘 준비하는 길은, 오늘 최선을 다하는 것이다.", tags: ["행동","현재","성실"] },
-  "5-20": { figure: "오노레 드 발자크", country: "프랑스", context: "1799년 출생", quote: "지나친 겸손은 자만의 또 다른 얼굴이다.", tags: ["성찰","균형","성숙"] },
-  "5-21": { figure: "알브레히트 뒤러", country: "독일", context: "1471년 출생", quote: "예술은 자연 안에 숨어 있다. 그것을 끌어낼 줄 아는 자가 그것을 가진다.", tags: ["발견","창조","관찰"] },
-  "5-22": { figure: "아서 코난 도일", country: "영국", context: "1859년 출생", quote: "불가능한 것을 모두 제거하고 남은 것은, 아무리 믿기 어려워도 진실이다.", tags: ["논리","탐구","통찰"] },
-  "5-23": { figure: "노무현 전 대통령 서거일", country: "한국", context: "2009년", quote: "원칙 있는 패배가 원칙 없는 승리보다 낫다.", tags: ["원칙","용기","성숙"] },
-  "5-24": { figure: "밥 딜런", country: "미국", context: "1941년 출생", quote: "바람의 답은 바람 속에 흩어져 있다.", tags: ["자유","사색","음악"] },
-  "5-25": { figure: "랄프 왈도 에머슨", country: "미국", context: "1803년 출생", quote: "당신이 되고자 하는 것 외에 그 어떤 것도 되지 마라.", tags: ["자기다움","용기","본질"] },
-  "5-26": { figure: "이황 (퇴계)", country: "한국", context: "조선 성리학자", quote: "마음을 보존함은 고요함에 있고, 일을 행함은 정성에 있다.", tags: ["수양","고요","성실"] },
-  "5-27": { figure: "헨리 키신저", country: "미국", context: "1923년 출생", quote: "역사는 자유를 가진 자들을 위한 것이지, 자유를 기다리는 자들을 위한 것이 아니다.", tags: ["주체성","행동","역사"] },
-  "5-28": { figure: "이중섭", country: "한국", context: "한국 근대 화가", quote: "예술은 가난해도 마음은 가난할 수 없다.", tags: ["예술","자존","본질"] },
-  "5-29": { figure: "존 F. 케네디", country: "미국", context: "1917년 출생", quote: "변화는 삶의 법칙이다. 과거나 현재만 보는 사람은 분명히 미래를 놓치게 된다.", tags: ["변화","미래","통찰"] },
-  "5-30": { figure: "윤동주", country: "한국", context: "봄의 시인을 떠올리며", quote: "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다.", tags: ["성찰","양심","순수"] },
-  "5-31": { figure: "월트 휘트먼", country: "미국", context: "1819년 출생", quote: "나는 광활하다. 나는 여러 가지를 품고 있다.", tags: ["자기다움","포용","자유"] }
+  "5-1":  { figure_kr: "근로자의 날", figure: "Labor Day", country: "Korea", context: "노동의 가치를 기리는 날", quote: "땀 흘려 일하는 손이 가장 아름답다.", tags: ["노동","성실"] },
+  "5-2":  { figure_kr: "레오나르도 다 빈치", figure: "Leonardo da Vinci", country: "Italy · 1519", context: "별세", quote: "경험은 결코 잘못되지 않는다. 잘못된 것은 우리의 판단이다.", tags: ["관조","성숙","직관"] },
+  "5-3":  { figure_kr: "마키아벨리", figure: "Niccolò Machiavelli", country: "Italy · 1469", context: "출생", quote: "운명은 우리 행동의 절반을 지배할 뿐, 나머지 절반은 우리 손에 남겨둔다.", tags: ["주체성","행동"] },
+  "5-4":  { figure_kr: "혜강 최한기", figure: "Choi Han-gi", country: "Korea", context: "조선 후기 실학자", quote: "배움이 멈추는 곳에서 사람도 멈춘다.", tags: ["배움","성장"] },
+  "5-5":  { figure_kr: "방정환", figure: "Bang Jeong-hwan", country: "Korea · 1923", context: "어린이날 제정", quote: "어린이를 내려다보지 마시고 쳐다보아 주시오.", tags: ["존중","순수"] },
+  "5-6":  { figure_kr: "지그문트 프로이트", figure: "Sigmund Freud", country: "Austria · 1856", context: "출생", quote: "꿈은 무의식에 이르는 왕도이다.", tags: ["내면","탐구"] },
+  "5-7":  { figure_kr: "표트르 차이콥스키", figure: "Pyotr Tchaikovsky", country: "Russia · 1840", context: "출생", quote: "영감은 게으른 자를 찾아오지 않는다.", tags: ["꾸준함","창조"] },
+  "5-8":  { figure_kr: "어버이날", figure: "Parents' Day", country: "Korea", context: "부모님께 감사하는 날", quote: "부모는 자식의 첫 하늘이고, 자식은 부모의 마지막 노을이다.", tags: ["가족","감사"] },
+  "5-9":  { figure_kr: "프리드리히 실러", figure: "Friedrich Schiller", country: "Germany · 1805", context: "별세", quote: "진정으로 아름다운 것은 자유로운 것이다.", tags: ["자유","아름다움"] },
+  "5-10": { figure_kr: "이순신 장군", figure: "Admiral Yi Sun-sin", country: "Korea", context: "임진왜란의 영웅", quote: "죽고자 하면 살 것이요, 살고자 하면 죽을 것이다.", tags: ["용기","결단"] },
+  "5-11": { figure_kr: "리하르트 파인만", figure: "Richard Feynman", country: "USA · 1918", context: "출생", quote: "스스로를 속이지 말라. 당신이야말로 가장 속기 쉬운 사람이다.", tags: ["정직","성찰"] },
+  "5-12": { figure_kr: "플로렌스 나이팅게일", figure: "Florence Nightingale", country: "UK · 1820", context: "출생, 국제 간호사의 날", quote: "내가 성공한 것은 단 한 번도 변명하지 않았기 때문이다.", tags: ["헌신","책임"] },
+  "5-13": { figure_kr: "한용운", figure: "Han Yong-un", country: "Korea", context: "독립운동가·시인", quote: "님은 갔습니다. 그러나 나는 님을 보내지 아니하였습니다.", tags: ["기다림","사랑"] },
+  "5-14": { figure_kr: "스승의 가르침", figure: "Teacher's Day Eve", country: "Korea", context: "스승의 날 무렵", quote: "가르치는 자는 영원히 배우는 자이다.", tags: ["배움","겸손"] },
+  "5-15": { figure_kr: "세종대왕", figure: "Sejong the Great", country: "Korea · 1397", context: "탄생일 · 스승의 날", quote: "백성을 가르치는 바른 소리. 모든 사람이 쉽게 익혀 날마다 쓰기에 편하게 하고자 함이라.", tags: ["애민","지혜"] },
+  "5-16": { figure_kr: "정약용", figure: "Jeong Yak-yong", country: "Korea", context: "조선 실학자", quote: "글을 읽되 그 속의 사람을 읽으라.", tags: ["배움","통찰"] },
+  "5-17": { figure_kr: "에릭 사티", figure: "Erik Satie", country: "France · 1866", context: "출생", quote: "내가 어렸을 때 사람들은 내게 말했다. 너는 자라면 알게 될 거야. 나는 자랐고, 아무것도 알지 못한다.", tags: ["성숙","겸손"] },
+  "5-18": { figure_kr: "5·18 광주 민주화운동", figure: "May 18 Movement", country: "Korea · 1980", context: "민주주의의 외침", quote: "그들은 졌으되 그들이 옳았다.", tags: ["용기","정의"] },
+  "5-19": { figure_kr: "맬컴 엑스", figure: "Malcolm X", country: "USA · 1925", context: "출생", quote: "내일을 위해 가장 잘 준비하는 길은, 오늘 최선을 다하는 것이다.", tags: ["행동","현재"] },
+  "5-20": { figure_kr: "오노레 드 발자크", figure: "Honoré de Balzac", country: "France · 1799", context: "출생", quote: "지나친 겸손은 자만의 또 다른 얼굴이다.", tags: ["성찰","균형"] },
+  "5-21": { figure_kr: "알브레히트 뒤러", figure: "Albrecht Dürer", country: "Germany · 1471", context: "출생", quote: "예술은 자연 안에 숨어 있다. 그것을 끌어낼 줄 아는 자가 그것을 가진다.", tags: ["발견","창조"] },
+  "5-22": { figure_kr: "아서 코난 도일", figure: "Arthur Conan Doyle", country: "UK · 1859", context: "출생", quote: "불가능한 것을 모두 제거하고 남은 것은, 아무리 믿기 어려워도 진실이다.", tags: ["논리","탐구"] },
+  "5-23": { figure_kr: "노무현 대통령", figure: "Roh Moo-hyun", country: "Korea · 2009", context: "서거", quote: "원칙 있는 패배가 원칙 없는 승리보다 낫다.", tags: ["원칙","용기"] },
+  "5-24": { figure_kr: "밥 딜런", figure: "Bob Dylan", country: "USA · 1941", context: "출생", quote: "바람의 답은 바람 속에 흩어져 있다.", tags: ["자유","사색"] },
+  "5-25": { figure_kr: "랄프 왈도 에머슨", figure: "Ralph Waldo Emerson", country: "USA · 1803", context: "출생", quote: "당신이 되고자 하는 것 외에 그 어떤 것도 되지 마라.", tags: ["자기다움","용기"] },
+  "5-26": { figure_kr: "이황 (퇴계)", figure: "Yi Hwang", country: "Korea", context: "조선 성리학자", quote: "마음을 보존함은 고요함에 있고, 일을 행함은 정성에 있다.", tags: ["수양","고요"] },
+  "5-27": { figure_kr: "헨리 키신저", figure: "Henry Kissinger", country: "USA · 1923", context: "출생", quote: "역사는 자유를 가진 자들을 위한 것이지, 자유를 기다리는 자들을 위한 것이 아니다.", tags: ["주체성","역사"] },
+  "5-28": { figure_kr: "이중섭", figure: "Lee Jung-seob", country: "Korea", context: "한국 근대 화가", quote: "예술은 가난해도 마음은 가난할 수 없다.", tags: ["예술","자존"] },
+  "5-29": { figure_kr: "존 F. 케네디", figure: "John F. Kennedy", country: "USA · 1917", context: "출생", quote: "변화는 삶의 법칙이다. 과거나 현재만 보는 사람은 분명히 미래를 놓치게 된다.", tags: ["변화","미래"] },
+  "5-30": { figure_kr: "윤동주", figure: "Yoon Dong-ju", country: "Korea", context: "봄의 시인을 떠올리며", quote: "죽는 날까지 하늘을 우러러 한 점 부끄럼이 없기를, 잎새에 이는 바람에도 나는 괴로워했다.", tags: ["성찰","순수"] },
+  "5-31": { figure_kr: "월트 휘트먼", figure: "Walt Whitman", country: "USA · 1819", context: "출생", quote: "나는 광활하다. 나는 여러 가지를 품고 있다.", tags: ["자기다움","포용"] }
 };
 
-// 유형 정의
 const TYPES = {
-  "depho":   { name: "깊은 호수", hanja: "深湖", desc: "말보다 생각이 앞서는 하루입니다. 표면은 잔잔하지만 안에서는 많은 것이 일어나고 있습니다.\n혼자만의 시간이 가장 큰 회복이 될 수 있어요." },
-  "yugang":  { name: "흐르는 강", hanja: "流江", desc: "어떤 자리에서도 결을 맞출 수 있는 하루입니다. 강한 주장보다 조화를 택하는 마음이 앞섭니다.\n다만 너무 많은 결을 맞추다 자기 자리를 잃지 않도록." },
-  "yulhwa":  { name: "타오르는 불", hanja: "烈火", desc: "안에서 무언가가 끓고 있는 하루입니다. 미뤄둔 일에 손을 대기 좋은 때.\n뜨거움을 다스리는 한 박자의 쉼만 잊지 마세요." },
-  "pungya":  { name: "바람 부는 들", hanja: "風野", desc: "한 자리에 머무르지 못하는 하루입니다. 새로운 풍경이 필요한 마음.\n변화 속에서도 흔들리지 않을 작은 중심점 하나를 챙기세요." },
-  "banseok": { name: "단단한 바위", hanja: "盤石", desc: "흔들림 없이 자기 자리를 지키는 하루입니다. 천천히, 그러나 분명하게.\n단단함 속에 가끔은 숨 쉴 틈도 두세요." },
-  "lyeong":  { name: "빛나는 새벽", hanja: "黎明", desc: "어둠을 막 지나온 하루입니다. 작은 빛 하나가 멀리 보입니다.\n새벽이 짧으니 그 빛이 사라지기 전 한 걸음 내딛으세요." },
-  "chusuk":  { name: "무르익은 가을", hanja: "秋熟", desc: "한 계절이 마무리되는 하루입니다. 거두고 정리하기 좋은 마음.\n정리는 끝이 아니라 다음을 위한 자리 만들기예요." },
-  "chuna":   { name: "깨어나는 봄", hanja: "春芽", desc: "오랜 추위가 끝나가는 하루입니다. 작은 새싹 하나가 안에서 올라옵니다.\n새싹은 천천히 자라니 너무 빨리 결과를 바라지 마세요." }
+  "depho":   { name: "깊은 호수", en: "Deep Lake", hanja: "深湖", color: "#2E5C8A", color2: "#1F3F5E",
+    desc: "말보다 생각이 앞서는 하루입니다. 표면은 잔잔하지만 안에서는 많은 것이 일어나고 있습니다. 혼자만의 시간이 가장 큰 회복이 될 수 있어요." },
+  "yugang":  { name: "흐르는 강", en: "Flowing River", hanja: "流江", color: "#5B8E7D", color2: "#3D6B5C",
+    desc: "어떤 자리에서도 결을 맞출 수 있는 하루입니다. 강한 주장보다 조화를 택하는 마음이 앞섭니다. 다만 너무 많은 결을 맞추다 자기 자리를 잃지 않도록." },
+  "yulhwa":  { name: "타오르는 불", en: "Burning Fire", hanja: "烈火", color: "#C8503A", color2: "#9A3826",
+    desc: "안에서 무언가가 끓고 있는 하루입니다. 미뤄둔 일에 손을 대기 좋은 때. 뜨거움을 다스리는 한 박자의 쉼만 잊지 마세요." },
+  "pungya":  { name: "바람 부는 들", en: "Windy Plain", hanja: "風野", color: "#8FA572", color2: "#6B7F54",
+    desc: "한 자리에 머무르지 못하는 하루입니다. 새로운 풍경이 필요한 마음. 변화 속에서도 흔들리지 않을 작은 중심점 하나를 챙기세요." },
+  "banseok": { name: "단단한 바위", en: "Steady Rock", hanja: "盤石", color: "#4A4A48", color2: "#2E2E2C",
+    desc: "흔들림 없이 자기 자리를 지키는 하루입니다. 천천히, 그러나 분명하게. 단단함 속에 가끔은 숨 쉴 틈도 두세요." },
+  "lyeong":  { name: "빛나는 새벽", en: "Bright Dawn", hanja: "黎明", color: "#D4A03C", color2: "#A87825",
+    desc: "어둠을 막 지나온 하루입니다. 작은 빛 하나가 멀리 보입니다. 새벽이 짧으니 그 빛이 사라지기 전 한 걸음 내딛으세요." },
+  "chusuk":  { name: "무르익은 가을", en: "Ripe Autumn", hanja: "秋熟", color: "#B8742A", color2: "#8C541A",
+    desc: "한 계절이 마무리되는 하루입니다. 거두고 정리하기 좋은 마음. 정리는 끝이 아니라 다음을 위한 자리 만들기예요." },
+  "chuna":   { name: "깨어나는 봄", en: "Spring Sprout", hanja: "春芽", color: "#D89BA0", color2: "#B07378",
+    desc: "오랜 추위가 끝나가는 하루입니다. 작은 새싹 하나가 안에서 올라옵니다. 새싹은 천천히 자라니 너무 빨리 결과를 바라지 마세요." }
 };
 
-// 8유형 처방 풀 (각 유형별 8개씩, 총 64개 — 추후 46개로 확장 예정)
 const PRESCRIPTIONS = {
   "depho": [
-    "오늘의 당신께 — 답을 정하지 마세요. 호수는 흐트러진 후에 더 깊어집니다.",
-    "오늘의 당신께 — 누군가에게 말하지 않아도 되는 일이 있습니다. 그 침묵을 지켜주세요.",
-    "오늘의 당신께 — 깊이 들어갈수록 차가워지지만, 그 안에 답이 있습니다.",
-    "오늘의 당신께 — 비춰진 모습이 흔들린다고 진짜가 흔들린 것은 아닙니다.",
-    "오늘의 당신께 — 잠잠한 호수에 던진 작은 돌 하나가 가장 멀리 갑니다.",
-    "오늘의 당신께 — 깊은 곳의 답은 천천히 떠오릅니다. 기다려주세요.",
-    "오늘의 당신께 — 오늘은 듣는 쪽으로 머물러도 충분합니다.",
-    "오늘의 당신께 — 가라앉은 것을 일부러 휘젓지 마세요. 가라앉음에도 의미가 있습니다."
+    "답을 정하지 마세요. 호수는 흐트러진 후에 더 깊어집니다.",
+    "누군가에게 말하지 않아도 되는 일이 있습니다. 그 침묵을 지켜주세요.",
+    "깊이 들어갈수록 차가워지지만, 그 안에 답이 있습니다.",
+    "비춰진 모습이 흔들린다고 진짜가 흔들린 것은 아닙니다.",
+    "잠잠한 호수에 던진 작은 돌 하나가 가장 멀리 갑니다.",
+    "깊은 곳의 답은 천천히 떠오릅니다. 기다려주세요.",
+    "오늘은 듣는 쪽으로 머물러도 충분합니다.",
+    "가라앉은 것을 일부러 휘젓지 마세요. 가라앉음에도 의미가 있습니다."
   ],
   "yugang": [
-    "오늘의 당신께 — 강은 막히면 길을 만듭니다. 우회도 길입니다.",
-    "오늘의 당신께 — 모두를 흐르게 하느라 자신이 마르지 않도록.",
-    "오늘의 당신께 — 흐르는 자리마다 풍경이 바뀝니다. 같은 풍경에 머물지 마세요.",
-    "오늘의 당신께 — 균형은 정지가 아니라 끊임없는 조정입니다.",
-    "오늘의 당신께 — 양보가 약함이 아닙니다. 흐를 줄 아는 단단함입니다.",
-    "오늘의 당신께 — 강은 모든 지류를 받아들이지만, 자기 방향은 잃지 않습니다.",
-    "오늘의 당신께 — 빠른 물살보다 깊은 물살이 멀리 갑니다.",
-    "오늘의 당신께 — 오늘은 결을 맞추는 만큼, 자기 결도 살펴주세요."
+    "강은 막히면 길을 만듭니다. 우회도 길입니다.",
+    "모두를 흐르게 하느라 자신이 마르지 않도록.",
+    "흐르는 자리마다 풍경이 바뀝니다. 같은 풍경에 머물지 마세요.",
+    "균형은 정지가 아니라 끊임없는 조정입니다.",
+    "양보가 약함이 아닙니다. 흐를 줄 아는 단단함입니다.",
+    "강은 모든 지류를 받아들이지만, 자기 방향은 잃지 않습니다.",
+    "빠른 물살보다 깊은 물살이 멀리 갑니다.",
+    "오늘은 결을 맞추는 만큼, 자기 결도 살펴주세요."
   ],
   "yulhwa": [
-    "오늘의 당신께 — 미뤘던 일에 불을 지펴보세요. 시작이 가장 큰 일입니다.",
-    "오늘의 당신께 — 뜨거움을 다스리는 자가 멀리 갑니다.",
-    "오늘의 당신께 — 한 가지에 모든 것을 쏟지 마세요. 불은 번지면 약해집니다.",
-    "오늘의 당신께 — 욱하는 마음을 한 번 누르면, 같은 일이 다르게 풀립니다.",
-    "오늘의 당신께 — 식기 전에 움직이세요. 단, 방향은 분명하게.",
-    "오늘의 당신께 — 작은 불씨도 큰 불이 됩니다. 무엇에 불을 붙일지 신중히.",
-    "오늘의 당신께 — 행동이 답입니다. 단, 행동 후에 잠시 식히는 시간도.",
-    "오늘의 당신께 — 표현하고 싶은 마음을 억누르지 마세요. 말 한 마디가 길을 엽니다."
+    "미뤘던 일에 불을 지펴보세요. 시작이 가장 큰 일입니다.",
+    "뜨거움을 다스리는 자가 멀리 갑니다.",
+    "한 가지에 모든 것을 쏟지 마세요. 불은 번지면 약해집니다.",
+    "욱하는 마음을 한 번 누르면, 같은 일이 다르게 풀립니다.",
+    "식기 전에 움직이세요. 단, 방향은 분명하게.",
+    "작은 불씨도 큰 불이 됩니다. 무엇에 불을 붙일지 신중히.",
+    "행동이 답입니다. 단, 행동 후에 잠시 식히는 시간도.",
+    "표현하고 싶은 마음을 억누르지 마세요. 말 한 마디가 길을 엽니다."
   ],
   "pungya": [
-    "오늘의 당신께 — 안 가본 길로 한 번 돌아가보세요.",
-    "오늘의 당신께 — 변화가 두려운 게 아니라, 익숙함을 잃는 게 두려운 것입니다.",
-    "오늘의 당신께 — 바람은 멈추지 않고 길을 만듭니다.",
-    "오늘의 당신께 — 떠나는 것만큼 어려운 게 정착하는 일입니다.",
-    "오늘의 당신께 — 오늘 하나의 작은 시도가 한 달을 바꿉니다.",
-    "오늘의 당신께 — 흔들림 속에서도 잃지 않을 한 가지를 정해두세요.",
-    "오늘의 당신께 — 같은 자리에서도 다른 시간엔 풍경이 다릅니다.",
-    "오늘의 당신께 — 새로움이 정답이 아니어도, 새로움 자체가 회복일 때가 있습니다."
+    "안 가본 길로 한 번 돌아가보세요.",
+    "변화가 두려운 게 아니라, 익숙함을 잃는 게 두려운 것입니다.",
+    "바람은 멈추지 않고 길을 만듭니다.",
+    "떠나는 것만큼 어려운 게 정착하는 일입니다.",
+    "오늘 하나의 작은 시도가 한 달을 바꿉니다.",
+    "흔들림 속에서도 잃지 않을 한 가지를 정해두세요.",
+    "같은 자리에서도 다른 시간엔 풍경이 다릅니다.",
+    "새로움이 정답이 아니어도, 새로움 자체가 회복일 때가 있습니다."
   ],
   "banseok": [
-    "오늘의 당신께 — 천천히, 그러나 멈추지 않으면 됩니다.",
-    "오늘의 당신께 — 변하지 않는 것이 가장 큰 자산입니다.",
-    "오늘의 당신께 — 오늘 한 가지만 정확히 끝내세요. 그것이 내일의 토대입니다.",
-    "오늘의 당신께 — 단단함도 가끔은 숨 쉬어야 합니다.",
-    "오늘의 당신께 — 누군가 의지할 수 있는 자리에 있다는 것은 큰 일입니다.",
-    "오늘의 당신께 — 흔들리지 않는 것이 곧 무거움은 아닙니다.",
-    "오늘의 당신께 — 오래된 약속을 지키기 좋은 날입니다.",
-    "오늘의 당신께 — 오늘의 작은 일관성이 한 달의 신뢰를 만듭니다."
+    "천천히, 그러나 멈추지 않으면 됩니다.",
+    "변하지 않는 것이 가장 큰 자산입니다.",
+    "오늘 한 가지만 정확히 끝내세요. 그것이 내일의 토대입니다.",
+    "단단함도 가끔은 숨 쉬어야 합니다.",
+    "누군가 의지할 수 있는 자리에 있다는 것은 큰 일입니다.",
+    "흔들리지 않는 것이 곧 무거움은 아닙니다.",
+    "오래된 약속을 지키기 좋은 날입니다.",
+    "오늘의 작은 일관성이 한 달의 신뢰를 만듭니다."
   ],
   "lyeong": [
-    "오늘의 당신께 — 어둠을 지나온 자만이 새벽의 색을 압니다.",
-    "오늘의 당신께 — 새벽은 짧습니다. 그 빛이 사라지기 전 한 걸음 내딛으세요.",
-    "오늘의 당신께 — 작은 빛 하나가 멀리 있는 누군가를 인도합니다.",
-    "오늘의 당신께 — 시작은 늘 어슴푸레합니다. 그래도 시작입니다.",
-    "오늘의 당신께 — 어제의 어둠을 잊지 마세요. 그것이 오늘의 빛을 더 또렷하게 합니다.",
-    "오늘의 당신께 — 새로운 하루를 받아들 자격은 누구에게나 있습니다.",
-    "오늘의 당신께 — 오늘 시작한 일이 내일의 길을 만듭니다.",
-    "오늘의 당신께 — 빛은 늦게 떠도 같은 빛입니다. 늦었다고 작아지지 않아요."
+    "어둠을 지나온 자만이 새벽의 색을 압니다.",
+    "새벽은 짧습니다. 그 빛이 사라지기 전 한 걸음 내딛으세요.",
+    "작은 빛 하나가 멀리 있는 누군가를 인도합니다.",
+    "시작은 늘 어슴푸레합니다. 그래도 시작입니다.",
+    "어제의 어둠을 잊지 마세요. 그것이 오늘의 빛을 더 또렷하게 합니다.",
+    "새로운 하루를 받아들 자격은 누구에게나 있습니다.",
+    "오늘 시작한 일이 내일의 길을 만듭니다.",
+    "빛은 늦게 떠도 같은 빛입니다. 늦었다고 작아지지 않아요."
   ],
   "chusuk": [
-    "오늘의 당신께 — 거둘 때입니다. 그동안의 노력을 알아봐주세요.",
-    "오늘의 당신께 — 정리는 끝이 아니라 다음을 위한 자리 만들기입니다.",
-    "오늘의 당신께 — 오늘은 한 페이지를 덮어도 좋은 날입니다.",
-    "오늘의 당신께 — 무르익음은 시간을 들인 자만이 가지는 결입니다.",
-    "오늘의 당신께 — 모든 것을 다 가질 필요는 없습니다. 적당히 비우세요.",
-    "오늘의 당신께 — 오늘의 차분함은 지난 모든 계절이 만든 결입니다.",
-    "오늘의 당신께 — 회고는 후회가 아닙니다. 다음 계절의 씨앗입니다.",
-    "오늘의 당신께 — 잘 익은 열매는 서둘러 떨어지지 않습니다."
+    "거둘 때입니다. 그동안의 노력을 알아봐주세요.",
+    "정리는 끝이 아니라 다음을 위한 자리 만들기입니다.",
+    "오늘은 한 페이지를 덮어도 좋은 날입니다.",
+    "무르익음은 시간을 들인 자만이 가지는 결입니다.",
+    "모든 것을 다 가질 필요는 없습니다. 적당히 비우세요.",
+    "오늘의 차분함은 지난 모든 계절이 만든 결입니다.",
+    "회고는 후회가 아닙니다. 다음 계절의 씨앗입니다.",
+    "잘 익은 열매는 서둘러 떨어지지 않습니다."
   ],
   "chuna": [
-    "오늘의 당신께 — 새싹은 천천히 자랍니다. 너무 빨리 결과를 바라지 마세요.",
-    "오늘의 당신께 — 회복은 작은 것에서 시작됩니다. 오늘 한 가지면 충분해요.",
-    "오늘의 당신께 — 추위를 견딘 새싹이 가장 푸릅니다.",
-    "오늘의 당신께 — 다시 시작하는 데 늦은 때는 없습니다.",
-    "오늘의 당신께 — 오늘의 작은 움직임이 봄의 모든 것입니다.",
-    "오늘의 당신께 — 어제와 같은 자리여도, 오늘의 당신은 다릅니다.",
-    "오늘의 당신께 — 모든 봄은 처음입니다.",
-    "오늘의 당신께 — 깨어나는 데에는 자기만의 속도가 있습니다."
+    "새싹은 천천히 자랍니다. 너무 빨리 결과를 바라지 마세요.",
+    "회복은 작은 것에서 시작됩니다. 오늘 한 가지면 충분해요.",
+    "추위를 견딘 새싹이 가장 푸릅니다.",
+    "다시 시작하는 데 늦은 때는 없습니다.",
+    "오늘의 작은 움직임이 봄의 모든 것입니다.",
+    "어제와 같은 자리여도, 오늘의 당신은 다릅니다.",
+    "모든 봄은 처음입니다.",
+    "깨어나는 데에는 자기만의 속도가 있습니다."
   ]
 };
 
-// 진단 문항
-const QUESTIONS = [
-  {
-    id: "Q1", text: "지금 기분 상태는 어떠세요?", hint: "오늘 이 순간의 감정",
-    type: "single", layout: "list",
+// 고정 문항 (Q1, Q2, Q3, Q8, Q9)
+const FIXED_QUESTIONS = {
+  Q1: { text: "지금 기분 상태는 어떠세요?", hint: "오늘 이 순간의 감정", type: "single", layout: "list",
     options: [
       { label: "절망", scores: { depho: 3, banseok: 1, chusuk: 2, chuna: 2 } },
       { label: "우울", scores: { depho: 3, yugang: 1, banseok: 1, chusuk: 2, chuna: 1 } },
       { label: "평범", scores: { depho: 1, yugang: 3, pungya: 1, banseok: 3, chusuk: 1 } },
       { label: "기쁨", scores: { yugang: 1, yulhwa: 2, pungya: 2, banseok: 1, lyeong: 3, chuna: 2 } },
       { label: "환희", scores: { yulhwa: 3, pungya: 2, lyeong: 3, chuna: 1 } }
-    ]
-  },
-  {
-    id: "Q2", text: "지금 가장 끌리는 색은?", hint: "이유 없이 마음 가는 색",
-    type: "single", layout: "grid-3",
+    ]},
+  Q2: { text: "지금 가장 끌리는 색은?", hint: "이유 없이 마음 가는 색", type: "single", layout: "grid-3",
     options: [
       { label: "빨강", scores: { yulhwa: 3, lyeong: 1 } },
       { label: "주황", scores: { yulhwa: 2, pungya: 1, lyeong: 2 } },
@@ -682,11 +1083,8 @@ const QUESTIONS = [
       { label: "파랑", scores: { depho: 3, yugang: 1 } },
       { label: "남색", scores: { depho: 2, banseok: 2, chusuk: 1 } },
       { label: "보라", scores: { depho: 2, chusuk: 2, pungya: 1 } }
-    ]
-  },
-  {
-    id: "Q3", text: "오늘 끌리는 영화 장르는?", hint: "지금 보고 싶은 결",
-    type: "single", layout: "grid-2",
+    ]},
+  Q3: { text: "오늘 끌리는 영화 장르는?", hint: "지금 보고 싶은 결", type: "single", layout: "grid-2",
     options: [
       { label: "액션·전쟁", scores: { yulhwa: 3, banseok: 1 } },
       { label: "멜로·로맨스", scores: { yugang: 2, depho: 2, chusuk: 1 } },
@@ -694,166 +1092,360 @@ const QUESTIONS = [
       { label: "성장·휴먼", scores: { chuna: 3, lyeong: 2, yugang: 1 } },
       { label: "비극·예술", scores: { depho: 3, chusuk: 2 } },
       { label: "SF·판타지", scores: { pungya: 3, lyeong: 1 } }
-    ]
-  },
-  {
-    id: "Q4", text: "다음 중 읽어본 책은? (복수 선택 가능)", hint: "한 번 펼쳐본 적 있으면 됩니다",
-    type: "multi", layout: "list",
-    options: [
-      { label: "어린 왕자", scores: { depho: 2, chuna: 2 } },
-      { label: "데미안", scores: { depho: 2, chuna: 1, lyeong: 1 } },
-      { label: "총·균·쇠 / 사피엔스", scores: { banseok: 2, depho: 1 } },
-      { label: "토지 / 태백산맥", scores: { banseok: 3, chusuk: 1 } },
-      { label: "엄마를 부탁해 / 채식주의자", scores: { depho: 2, chusuk: 1 } },
-      { label: "달과 6펜스 / 시드니의 인생수업", scores: { pungya: 2, yulhwa: 1 } },
-      { label: "코스모스 / 침묵의 봄", scores: { depho: 1, banseok: 1, chuna: 1 } }
-    ]
-  },
-  {
-    id: "Q5", text: "지금 끌리는 음식·음료는? (복수 선택)", hint: "오늘 입맛이 가는 곳",
-    type: "multi", layout: "grid-2",
-    options: [
-      { label: "한식·국밥", scores: { banseok: 2, yugang: 1 } },
-      { label: "양식·파스타", scores: { pungya: 2, lyeong: 1 } },
-      { label: "중식·일식", scores: { yugang: 2, chusuk: 1 } },
-      { label: "커피·홍차", scores: { depho: 2, chusuk: 1 } },
-      { label: "맥주·소주", scores: { yulhwa: 1, yugang: 1, pungya: 1 } },
-      { label: "와인·차(녹차/홍차)", scores: { chusuk: 2, depho: 1 } }
-    ]
-  },
-  {
-    id: "Q6", text: "요즘 자주 떠오르는 단어는?", hint: "한 단어를 고른다면",
-    type: "single", layout: "grid-2",
-    options: [
-      { label: "사랑", scores: { yugang: 2, chuna: 1, depho: 1 } },
-      { label: "자유", scores: { pungya: 3, lyeong: 1 } },
-      { label: "안정", scores: { banseok: 3, yugang: 1 } },
-      { label: "도전", scores: { yulhwa: 3, lyeong: 1 } },
-      { label: "성장", scores: { lyeong: 2, chuna: 2, yulhwa: 1 } },
-      { label: "휴식", scores: { depho: 2, chusuk: 2 } },
-      { label: "의미", scores: { depho: 3, chusuk: 1 } },
-      { label: "변화", scores: { pungya: 3, lyeong: 1 } }
-    ]
-  },
-  {
-    id: "Q7", text: "지금 가장 필요한 것은?", hint: "마음이 가장 끌리는 것",
-    type: "single", layout: "grid-2",
-    options: [
-      { label: "위로", scores: { depho: 2, chuna: 2, yugang: 1 } },
-      { label: "자극·새로움", scores: { yulhwa: 2, pungya: 3 } },
-      { label: "분명한 답", scores: { banseok: 2, lyeong: 2 } },
-      { label: "침묵·고요", scores: { depho: 3, chusuk: 1 } },
-      { label: "함께할 사람", scores: { yugang: 3, chuna: 1 } },
-      { label: "정리·마무리", scores: { chusuk: 3, banseok: 1 } }
-    ]
-  },
-  {
-    id: "Q8", text: "요즘 시간이 어떻게 흐르나요?", hint: "최근 일주일의 시간 감각",
-    type: "single", layout: "grid-2",
+    ]},
+  Q8: { text: "요즘 시간이 어떻게 흐르나요?", hint: "최근 일주일의 시간 감각", type: "single", layout: "grid-2",
     options: [
       { label: "느리게 흐른다", scores: { depho: 2, chusuk: 2 } },
       { label: "너무 빠르다", scores: { yulhwa: 2, pungya: 2, lyeong: 1 } },
       { label: "멈춰있는 듯하다", scores: { depho: 2, banseok: 1, chuna: 1 } },
       { label: "흐트러져 있다", scores: { pungya: 2, yulhwa: 1, chuna: 1 } }
-    ]
-  },
-  {
-    id: "Q9", text: "지금 함께 있고 싶은 사람 수는?", hint: "오늘의 관계 욕구",
-    type: "single", layout: "grid-2",
+    ]},
+  Q9: { text: "지금 함께 있고 싶은 사람 수는?", hint: "오늘의 관계 욕구", type: "single", layout: "grid-2",
     options: [
       { label: "아무도 없이 혼자", scores: { depho: 3, chusuk: 1 } },
       { label: "가까운 한 명", scores: { yugang: 2, depho: 1, chuna: 1 } },
       { label: "친한 두세 명", scores: { yugang: 2, banseok: 1, lyeong: 1 } },
       { label: "여럿이 시끌벅적", scores: { yulhwa: 2, pungya: 2, lyeong: 1 } }
+    ]}
+};
+
+// 4배 확장 풀 (Q4, Q5, Q6, Q7, Q10) — 매 진단마다 무작위로 N개 픽
+const POOLS = {
+  Q4: {
+    text: "다음 중 읽어본 책은? (복수 선택 가능)",
+    hint: "한 번 펼쳐본 적 있으면 됩니다",
+    type: "multi", layout: "list", pickCount: 7,
+    options: [
+      { label: "토지 / 박경리", scores: { banseok: 3, chusuk: 1 } },
+      { label: "엄마를 부탁해 / 신경숙", scores: { depho: 2, chusuk: 2 } },
+      { label: "채식주의자 / 한강", scores: { depho: 3, chusuk: 1 } },
+      { label: "쇼코의 미소 / 최은영", scores: { depho: 2, chuna: 1 } },
+      { label: "82년생 김지영 / 조남주", scores: { depho: 2, chusuk: 1 } },
+      { label: "아몬드 / 손원평", scores: { chuna: 2, depho: 1, lyeong: 1 } },
+      { label: "달러구트 꿈 백화점", scores: { chuna: 2, lyeong: 2 } },
+      { label: "나미야 잡화점의 기적", scores: { yugang: 2, chuna: 1 } },
+      { label: "어린 왕자 / 생텍쥐페리", scores: { depho: 2, chuna: 2 } },
+      { label: "데미안 / 헤르만 헤세", scores: { depho: 2, chuna: 1, lyeong: 1 } },
+      { label: "1984 / 조지 오웰", scores: { depho: 1, banseok: 2, chusuk: 1 } },
+      { label: "노인과 바다 / 헤밍웨이", scores: { banseok: 2, chusuk: 2 } },
+      { label: "위대한 개츠비 / 피츠제럴드", scores: { pungya: 1, chusuk: 2, depho: 1 } },
+      { label: "달과 6펜스 / 모옴", scores: { pungya: 2, yulhwa: 1 } },
+      { label: "총·균·쇠 / 다이아몬드", scores: { banseok: 2, depho: 1 } },
+      { label: "사피엔스 / 하라리", scores: { banseok: 2, depho: 1, pungya: 1 } },
+      { label: "미움받을 용기", scores: { yulhwa: 2, lyeong: 1, banseok: 1 } },
+      { label: "아주 작은 습관의 힘", scores: { banseok: 3, lyeong: 1 } },
+      { label: "자존감 수업 / 윤홍균", scores: { chuna: 2, depho: 1, lyeong: 1 } },
+      { label: "여행의 이유 / 김영하", scores: { pungya: 3, depho: 1 } },
+      { label: "보통의 존재 / 이석원", scores: { depho: 2, chusuk: 1 } },
+      { label: "나는 나로 살기로 했다", scores: { lyeong: 2, chuna: 1, yulhwa: 1 } },
+      { label: "코스모스 / 칼 세이건", scores: { depho: 1, banseok: 1, chuna: 1 } },
+      { label: "죽음의 수용소에서 / 프랭클", scores: { banseok: 2, chusuk: 1, depho: 1 } },
+      { label: "월든 / 소로", scores: { depho: 3, chusuk: 1 } },
+      { label: "자기 앞의 생 / 가리", scores: { depho: 2, chusuk: 2 } },
+      { label: "정의란 무엇인가 / 샌델", scores: { banseok: 2, depho: 1 } },
+      { label: "총균쇠는 잘 모르겠고...", scores: { yugang: 1, pungya: 1 } }
     ]
   },
-  {
-    id: "Q10", text: "이번 주를 한 단어로 표현한다면?", hint: "지나온 일주일",
-    type: "single", layout: "grid-2",
+  Q5: {
+    text: "지금 끌리는 음식·음료는? (복수 선택)",
+    hint: "오늘 입맛이 가는 곳",
+    type: "multi", layout: "grid-2", pickCount: 6,
+    options: [
+      { label: "한식 백반·국밥", scores: { banseok: 2, yugang: 1 } },
+      { label: "찌개·국물 요리", scores: { banseok: 2, chusuk: 1 } },
+      { label: "분식·떡볶이", scores: { yulhwa: 1, yugang: 1, lyeong: 1 } },
+      { label: "보쌈·삼겹살", scores: { yugang: 2, yulhwa: 1 } },
+      { label: "한정식·정성스런 한 상", scores: { chusuk: 2, banseok: 1 } },
+      { label: "양식·파스타", scores: { pungya: 2, lyeong: 1 } },
+      { label: "샐러드·브런치", scores: { chuna: 2, lyeong: 1 } },
+      { label: "스테이크·고기 요리", scores: { yulhwa: 2, banseok: 1 } },
+      { label: "중식·짜장·짬뽕", scores: { yugang: 1, yulhwa: 1, banseok: 1 } },
+      { label: "일식·초밥·라멘", scores: { yugang: 2, chusuk: 1 } },
+      { label: "달콤한 디저트·케이크", scores: { chuna: 2, yugang: 1 } },
+      { label: "빵·베이커리", scores: { chuna: 1, depho: 1, yugang: 1 } },
+      { label: "아이스크림·빙수", scores: { lyeong: 2, chuna: 1 } },
+      { label: "과일", scores: { chuna: 2, lyeong: 1 } },
+      { label: "커피 (아메리카노·라떼)", scores: { depho: 2, chusuk: 1 } },
+      { label: "에스프레소·드립커피", scores: { depho: 2, banseok: 1 } },
+      { label: "녹차·홍차", scores: { chusuk: 2, depho: 1 } },
+      { label: "허브차·캐모마일", scores: { depho: 2, chuna: 1 } },
+      { label: "전통차 (대추·생강)", scores: { chusuk: 2, banseok: 1 } },
+      { label: "맥주·생맥주", scores: { yugang: 1, pungya: 1, lyeong: 1 } },
+      { label: "소주·전통주", scores: { yulhwa: 1, banseok: 1, yugang: 1 } },
+      { label: "와인", scores: { chusuk: 2, depho: 1 } },
+      { label: "위스키·하이볼", scores: { depho: 1, banseok: 1, chusuk: 1 } },
+      { label: "스파클링·칵테일", scores: { pungya: 2, lyeong: 1, yulhwa: 1 } }
+    ]
+  },
+  Q6: {
+    text: "요즘 자주 떠오르는 단어는?",
+    hint: "한 단어를 고른다면",
+    type: "single", layout: "grid-2", pickCount: 8,
+    options: [
+      { label: "사랑", scores: { yugang: 2, chuna: 1, depho: 1 } },
+      { label: "이별", scores: { chusuk: 3, depho: 1 } },
+      { label: "그리움", scores: { chusuk: 2, depho: 2 } },
+      { label: "고마움", scores: { yugang: 2, chuna: 1, chusuk: 1 } },
+      { label: "자유", scores: { pungya: 3, lyeong: 1 } },
+      { label: "변화", scores: { pungya: 3, lyeong: 1 } },
+      { label: "여행", scores: { pungya: 3, lyeong: 1 } },
+      { label: "도망", scores: { pungya: 2, depho: 1 } },
+      { label: "안정", scores: { banseok: 3, yugang: 1 } },
+      { label: "책임", scores: { banseok: 2, chusuk: 2 } },
+      { label: "일·커리어", scores: { banseok: 2, yulhwa: 1, lyeong: 1 } },
+      { label: "돈", scores: { banseok: 2, yulhwa: 1 } },
+      { label: "도전", scores: { yulhwa: 3, lyeong: 1 } },
+      { label: "시작", scores: { lyeong: 2, chuna: 2, yulhwa: 1 } },
+      { label: "꿈", scores: { lyeong: 3, pungya: 1 } },
+      { label: "용기", scores: { yulhwa: 2, lyeong: 2 } },
+      { label: "성장", scores: { lyeong: 2, chuna: 2, yulhwa: 1 } },
+      { label: "의미", scores: { depho: 3, chusuk: 1 } },
+      { label: "자기다움", scores: { depho: 2, lyeong: 1, chuna: 1 } },
+      { label: "공부", scores: { banseok: 2, depho: 1, lyeong: 1 } },
+      { label: "휴식", scores: { depho: 2, chusuk: 2 } },
+      { label: "위로", scores: { depho: 2, chuna: 2 } },
+      { label: "치유", scores: { chuna: 3, depho: 1 } },
+      { label: "잠", scores: { depho: 2, chusuk: 1, chuna: 1 } },
+      { label: "가족", scores: { banseok: 2, yugang: 1, chusuk: 1 } },
+      { label: "친구", scores: { yugang: 2, lyeong: 1, chuna: 1 } },
+      { label: "사람", scores: { yugang: 2, depho: 1 } },
+      { label: "혼자", scores: { depho: 2, chusuk: 1, banseok: 1 } },
+      { label: "오늘", scores: { yulhwa: 2, lyeong: 2 } },
+      { label: "지금", scores: { yulhwa: 2, pungya: 1, lyeong: 1 } },
+      { label: "내일", scores: { lyeong: 3, chuna: 1 } },
+      { label: "끝", scores: { chusuk: 3, depho: 1 } }
+    ]
+  },
+  Q7: {
+    text: "지금 가장 필요한 것은?",
+    hint: "마음이 가장 끌리는 것",
+    type: "single", layout: "grid-2", pickCount: 6,
+    options: [
+      { label: "위로", scores: { depho: 2, chuna: 2, yugang: 1 } },
+      { label: "이해받음", scores: { depho: 2, yugang: 2 } },
+      { label: "인정", scores: { lyeong: 2, banseok: 1, yulhwa: 1 } },
+      { label: "용서받음", scores: { chuna: 2, depho: 1, chusuk: 1 } },
+      { label: "응원", scores: { lyeong: 2, chuna: 1, yulhwa: 1 } },
+      { label: "공감", scores: { yugang: 2, depho: 1, chuna: 1 } },
+      { label: "안심", scores: { banseok: 2, chuna: 1, yugang: 1 } },
+      { label: "사랑받음", scores: { yugang: 2, chuna: 1, depho: 1 } },
+      { label: "자극·새로움", scores: { yulhwa: 2, pungya: 3 } },
+      { label: "변화", scores: { pungya: 3, yulhwa: 1 } },
+      { label: "동기부여", scores: { yulhwa: 2, lyeong: 2 } },
+      { label: "도전 거리", scores: { yulhwa: 3, lyeong: 1 } },
+      { label: "시작 신호", scores: { lyeong: 3, yulhwa: 1 } },
+      { label: "분명한 답", scores: { banseok: 2, lyeong: 2 } },
+      { label: "방향", scores: { lyeong: 2, depho: 1, banseok: 1 } },
+      { label: "결정", scores: { banseok: 2, yulhwa: 2 } },
+      { label: "지혜", scores: { depho: 2, chusuk: 2 } },
+      { label: "침묵·고요", scores: { depho: 2, chusuk: 2 } },
+      { label: "혼자만의 시간", scores: { depho: 2, chusuk: 1, banseok: 1 } },
+      { label: "잠 · 휴식", scores: { depho: 1, chusuk: 2, chuna: 1 } },
+      { label: "멈춤", scores: { chusuk: 2, depho: 1, banseok: 1 } },
+      { label: "함께할 사람", scores: { yugang: 3, chuna: 1 } },
+      { label: "정리·마무리", scores: { chusuk: 3, banseok: 1 } },
+      { label: "용기", scores: { yulhwa: 2, lyeong: 2 } }
+    ]
+  },
+  Q10: {
+    text: "이번 주를 한 단어로 표현한다면?",
+    hint: "지나온 일주일",
+    type: "single", layout: "grid-2", pickCount: 6,
     options: [
       { label: "피곤함", scores: { depho: 2, chusuk: 2 } },
+      { label: "지침", scores: { depho: 2, chusuk: 2 } },
+      { label: "답답함", scores: { yulhwa: 1, pungya: 2, depho: 1 } },
+      { label: "허무함", scores: { depho: 2, chusuk: 2 } },
+      { label: "외로움", scores: { depho: 2, chusuk: 2 } },
+      { label: "혼란", scores: { pungya: 2, depho: 1, yulhwa: 1 } },
       { label: "후련함", scores: { lyeong: 2, chusuk: 2, chuna: 1 } },
-      { label: "아쉬움", scores: { depho: 2, chusuk: 2 } },
+      { label: "뿌듯함", scores: { lyeong: 2, banseok: 2 } },
+      { label: "설렘", scores: { lyeong: 2, chuna: 2, yulhwa: 1 } },
       { label: "기대감", scores: { lyeong: 3, chuna: 2 } },
+      { label: "즐거움", scores: { yulhwa: 1, yugang: 1, lyeong: 2 } },
+      { label: "감사함", scores: { yugang: 2, chusuk: 1, chuna: 1 } },
       { label: "멍함", scores: { depho: 1, banseok: 1, chusuk: 1 } },
-      { label: "들뜸", scores: { yulhwa: 2, pungya: 2, lyeong: 1 } }
+      { label: "무난함", scores: { yugang: 2, banseok: 2 } },
+      { label: "차분함", scores: { depho: 2, chusuk: 2 } },
+      { label: "보통", scores: { yugang: 2, banseok: 1 } },
+      { label: "잔잔함", scores: { depho: 2, yugang: 1, chusuk: 1 } },
+      { label: "고요함", scores: { depho: 2, chusuk: 1, banseok: 1 } },
+      { label: "들뜸", scores: { yulhwa: 2, pungya: 2, lyeong: 1 } },
+      { label: "분주함", scores: { yulhwa: 2, pungya: 1, lyeong: 1 } },
+      { label: "치열함", scores: { yulhwa: 3, banseok: 1 } },
+      { label: "달림", scores: { yulhwa: 2, pungya: 2 } },
+      { label: "불꽃 같음", scores: { yulhwa: 3, lyeong: 1 } },
+      { label: "흩어짐", scores: { pungya: 3, depho: 1 } }
     ]
   }
-];
+};
 
-// =================== 상태 ===================
+// ============================================================
+// 상태
+// ============================================================
+let questions = [];   // 매 세션마다 보기 풀에서 무작위 픽한 결과
 let currentQuestion = 0;
-let answers = {};  // { Q1: index_or_indices, ... }
+let answers = {};
 let resultType = null;
 
-// =================== 초기화 ===================
-const days = ['일','월','화','수','목','금','토'];
+// ============================================================
+// 초기화 (메인 페이지)
+// ============================================================
 const today = new Date();
-const dateStr = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일 ${days[today.getDay()]}요일`;
-document.getElementById('date').textContent = dateStr;
+const monthNames = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const dateLabel = monthNames[today.getMonth()] + ' ' + String(today.getDate()).padStart(2, '0') + ', ' + today.getFullYear();
+document.getElementById('topDate').textContent = 'No. ' + (today.getMonth()+1) + '·' + String(today.getDate()).padStart(2, '0') + ' / ' + today.getFullYear();
 
-const todayKey = `${today.getMonth()+1}-${today.getDate()}`;
+const todayKey = (today.getMonth() + 1) + '-' + today.getDate();
 const todayQuote = QUOTES_DB[todayKey] || {
-  figure: "오늘의 한마디",
-  country: "",
+  figure: "Today's Voice", figure_kr: "오늘의 한마디", country: "—",
   context: "잠시 마음을 가다듬는 시간",
-  quote: "오늘 하루도 평안하시기를.",
-  tags: ["일상","평안"]
+  quote: "오늘 하루도 평안하시기를.", tags: ["일상","평안"]
 };
-document.getElementById('quoteContext').textContent = `${todayQuote.country ? todayQuote.country + ' · ' : ''}${todayQuote.context}`;
-document.getElementById('quoteFigure').textContent = todayQuote.figure;
-document.getElementById('quoteText').textContent = todayQuote.quote;
-document.getElementById('quoteTags').innerHTML = todayQuote.tags.map(t => `<span>${t}</span>`).join('');
 
-// =================== 진단 진행 ===================
-function startQuiz() {
-  document.getElementById('main-section').style.display = 'none';
-  document.getElementById('quiz-section').classList.add('active');
-  currentQuestion = 0;
-  answers = {};
-  renderQuestion();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+document.getElementById('qcDate').textContent = dateLabel;
+document.getElementById('qcFigure').textContent = todayQuote.figure_kr || todayQuote.figure;
+document.getElementById('qcContext').textContent = (todayQuote.country ? todayQuote.country + ' · ' : '') + todayQuote.context;
+document.getElementById('qcQuote').textContent = todayQuote.quote;
+document.getElementById('qcTags').innerHTML = todayQuote.tags.map(function(t){return '<span class="qc-tag">'+t+'</span>';}).join('');
+
+// 8유형 그리드 동적 생성
+function renderTypesGrid() {
+  const order = ['depho','yugang','yulhwa','pungya','banseok','lyeong','chusuk','chuna'];
+  const html = order.map(function(key, idx) {
+    const t = TYPES[key];
+    const num = String(idx+1).padStart(2, '0');
+    const desc = t.desc.split('.')[0] + '.';
+    return '<div class="type-card" style="--type-color: ' + t.color + '">' +
+      '<div class="type-card-num">' + num + ' / ' + t.hanja + '</div>' +
+      '<h3 class="type-card-name">' + t.name + '</h3>' +
+      '<div class="type-card-hanja">' + t.en + '</div>' +
+      '<p class="type-card-desc">' + desc + '</p>' +
+      '<div class="type-card-mark"></div>' +
+    '</div>';
+  }).join('');
+  document.getElementById('typesGrid').innerHTML = html;
+}
+renderTypesGrid();
+
+// ============================================================
+// Stage 전환
+// ============================================================
+function showStage(name) {
+  ['main','quiz','result'].forEach(function(s) {
+    document.getElementById('stage-' + s).classList.remove('is-active');
+  });
+  document.getElementById('stage-' + name).classList.add('is-active');
+  window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
+function goHome() { showStage('main'); }
+
+// ============================================================
+// 진단 시작 — 보기 풀에서 무작위 N개 픽
+// ============================================================
+function shuffleArray(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildQuestions() {
+  // Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10 순서로
+  const qs = [];
+
+  qs.push({ id: 'Q1', ...FIXED_QUESTIONS.Q1, options: FIXED_QUESTIONS.Q1.options });
+  qs.push({ id: 'Q2', ...FIXED_QUESTIONS.Q2, options: FIXED_QUESTIONS.Q2.options });
+  qs.push({ id: 'Q3', ...FIXED_QUESTIONS.Q3, options: FIXED_QUESTIONS.Q3.options });
+
+  // Q4, Q5: 풀에서 무작위 픽
+  const q4 = POOLS.Q4;
+  qs.push({ id: 'Q4', text: q4.text, hint: q4.hint, type: q4.type, layout: q4.layout,
+    options: shuffleArray(q4.options).slice(0, q4.pickCount) });
+
+  const q5 = POOLS.Q5;
+  qs.push({ id: 'Q5', text: q5.text, hint: q5.hint, type: q5.type, layout: q5.layout,
+    options: shuffleArray(q5.options).slice(0, q5.pickCount) });
+
+  // Q6, Q7: 풀에서 무작위 픽
+  const q6 = POOLS.Q6;
+  qs.push({ id: 'Q6', text: q6.text, hint: q6.hint, type: q6.type, layout: q6.layout,
+    options: shuffleArray(q6.options).slice(0, q6.pickCount) });
+
+  const q7 = POOLS.Q7;
+  qs.push({ id: 'Q7', text: q7.text, hint: q7.hint, type: q7.type, layout: q7.layout,
+    options: shuffleArray(q7.options).slice(0, q7.pickCount) });
+
+  qs.push({ id: 'Q8', ...FIXED_QUESTIONS.Q8, options: FIXED_QUESTIONS.Q8.options });
+  qs.push({ id: 'Q9', ...FIXED_QUESTIONS.Q9, options: FIXED_QUESTIONS.Q9.options });
+
+  // Q10
+  const q10 = POOLS.Q10;
+  qs.push({ id: 'Q10', text: q10.text, hint: q10.hint, type: q10.type, layout: q10.layout,
+    options: shuffleArray(q10.options).slice(0, q10.pickCount) });
+
+  return qs;
+}
+
+function startQuiz() {
+  console.log('[Today, Me] startQuiz');
+  questions = buildQuestions();
+  currentQuestion = 0;
+  answers = {};
+  resultType = null;
+  showStage('quiz');
+  renderQuestion();
+}
+
+// ============================================================
+// 진단 화면 렌더
+// ============================================================
 function renderQuestion() {
-  const q = QUESTIONS[currentQuestion];
-  const fillPct = ((currentQuestion + 1) / QUESTIONS.length) * 100;
+  const q = questions[currentQuestion];
+  const fillPct = ((currentQuestion + 1) / questions.length) * 100;
   document.getElementById('progressFill').style.width = fillPct + '%';
-  document.getElementById('progressText').textContent = `${currentQuestion + 1} / ${QUESTIONS.length}`;
+  document.getElementById('progressCurrent').textContent = currentQuestion + 1;
+  document.getElementById('progressLabel').textContent = q.type === 'multi' ? 'Multi-select' : 'Question';
 
   const layoutClass = q.layout === 'grid-2' ? 'grid-2' : (q.layout === 'grid-3' ? 'grid-3' : '');
   const selected = answers[q.id];
   const selectedSet = q.type === 'multi' ? new Set(selected || []) : null;
 
-  let html = `
-    <div class="q-num">Q${currentQuestion + 1}</div>
-    <div class="q-text">${q.text}</div>
-    <div class="q-hint">${q.hint}</div>
-    <div class="q-options ${layoutClass}">
-  `;
-  q.options.forEach((opt, idx) => {
-    const isSelected = q.type === 'multi'
-      ? selectedSet.has(idx)
-      : selected === idx;
-    html += `<button class="q-option ${isSelected ? 'selected' : ''}" onclick="selectOption(${idx})">${opt.label}</button>`;
+  let html = '<div class="q-eyebrow">Question ' + String(currentQuestion+1).padStart(2,'0') + (q.type === 'multi' ? ' · Multi-select' : '') + '</div>';
+  html += '<h2 class="q-text">' + q.text + '</h2>';
+  html += '<p class="q-hint">' + q.hint + '</p>';
+  html += '<div class="q-options ' + layoutClass + '">';
+  q.options.forEach(function(opt, idx) {
+    const isSelected = q.type === 'multi' ? selectedSet.has(idx) : selected === idx;
+    html += '<button class="q-option ' + (isSelected ? 'selected' : '') + '" onclick="selectOption(' + idx + ')">';
+    html += '<span class="marker"></span><span>' + opt.label + '</span>';
+    html += '</button>';
   });
-  html += `</div>`;
+  html += '</div>';
   if (q.type === 'multi') {
-    html += `<div class="q-multi-hint">복수 선택 가능 · 선택 안 해도 다음으로 진행 가능</div>`;
+    html += '<div class="q-multi-hint">— 복수 선택 가능 (선택 안 해도 진행 가능)</div>';
   }
-  document.getElementById('questionBox').innerHTML = html;
+
+  // re-trigger animation
+  const block = document.getElementById('questionBlock');
+  block.style.animation = 'none';
+  block.offsetHeight; // reflow
+  block.style.animation = '';
+  block.innerHTML = html;
 
   document.getElementById('prevBtn').disabled = currentQuestion === 0;
-  document.getElementById('nextBtn').textContent =
-    currentQuestion === QUESTIONS.length - 1 ? '결과 보기' : '다음';
+  document.getElementById('nextLabel').textContent = currentQuestion === questions.length - 1 ? '결과 보기' : '다음';
 }
 
 function selectOption(idx) {
-  const q = QUESTIONS[currentQuestion];
+  const q = questions[currentQuestion];
   if (q.type === 'multi') {
     let arr = answers[q.id] || [];
-    if (arr.includes(idx)) arr = arr.filter(i => i !== idx);
-    else arr = [...arr, idx];
+    if (arr.indexOf(idx) >= 0) arr = arr.filter(function(i){return i !== idx;});
+    else arr = arr.concat([idx]);
     answers[q.id] = arr;
   } else {
     answers[q.id] = idx;
@@ -862,13 +1454,12 @@ function selectOption(idx) {
 }
 
 function nextQuestion() {
-  const q = QUESTIONS[currentQuestion];
-  // single 문항은 답을 안 골랐으면 진행 불가
+  const q = questions[currentQuestion];
   if (q.type === 'single' && answers[q.id] === undefined) {
     showToast('한 가지를 선택해주세요');
     return;
   }
-  if (currentQuestion < QUESTIONS.length - 1) {
+  if (currentQuestion < questions.length - 1) {
     currentQuestion++;
     renderQuestion();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -885,103 +1476,124 @@ function prevQuestion() {
   }
 }
 
-// =================== 점수 계산 ===================
+// ============================================================
+// 점수 계산
+// ============================================================
 function calculateType() {
-  const scores = { depho: 0, yugang: 0, yulhwa: 0, pungya: 0, banseok: 0, lyeong: 0, chusuk: 0, chuna: 0 };
-  QUESTIONS.forEach(q => {
+  const TYPE_KEYS = ['depho','yugang','yulhwa','pungya','banseok','lyeong','chusuk','chuna'];
+  const scores = {};
+  TYPE_KEYS.forEach(function(k) { scores[k] = 0; });
+
+  questions.forEach(function(q) {
     const ans = answers[q.id];
     if (ans === undefined || ans === null) return;
     if (q.type === 'multi') {
-      ans.forEach(idx => {
+      ans.forEach(function(idx) {
         const opt = q.options[idx];
-        Object.entries(opt.scores).forEach(([key, val]) => { scores[key] += val; });
+        if (!opt) return;
+        Object.keys(opt.scores).forEach(function(k) { scores[k] += opt.scores[k]; });
       });
     } else {
       const opt = q.options[ans];
-      Object.entries(opt.scores).forEach(([key, val]) => { scores[key] += val; });
+      if (!opt) return;
+      Object.keys(opt.scores).forEach(function(k) { scores[k] += opt.scores[k]; });
     }
   });
-  let topType = null, topScore = -1;
-  Object.entries(scores).forEach(([key, val]) => {
-    if (val > topScore) { topScore = val; topType = key; }
-  });
-  return topType;
+
+  console.log('[Today, Me] 점수:', scores);
+
+  let topScore = -1;
+  TYPE_KEYS.forEach(function(k) { if (scores[k] > topScore) topScore = scores[k]; });
+  const tied = TYPE_KEYS.filter(function(k) { return scores[k] === topScore; });
+
+  let chosen;
+  if (tied.length === 1) {
+    chosen = tied[0];
+  } else {
+    const seed = answersToSeed();
+    chosen = tied[seed % tied.length];
+    console.log('[Today, Me] 동률:', tied, '→', chosen);
+  }
+
+  const sortedTypes = TYPE_KEYS.slice().sort(function(a, b) { return scores[b] - scores[a]; });
+  const secondary = sortedTypes.filter(function(k) { return k !== chosen; })[0];
+
+  return { primary: chosen, secondary: secondary, scores: scores };
 }
 
-// 답변을 시드로 변환 → 처방 풀에서 결정론적으로 선택
 function answersToSeed() {
   let seed = 0;
-  QUESTIONS.forEach((q, qi) => {
+  questions.forEach(function(q, qi) {
     const ans = answers[q.id];
     if (ans === undefined) return;
     if (q.type === 'multi') {
-      ans.forEach(idx => { seed += (qi + 1) * 17 + idx * 31; });
+      ans.forEach(function(idx) { seed += (qi+1) * 17 + idx * 31; });
     } else {
-      seed += (qi + 1) * 17 + ans * 31;
+      seed += (qi+1) * 17 + ans * 31;
     }
   });
-  // 날짜도 시드에 포함 → 같은 응답이라도 날짜별로 처방이 다르게
   seed += today.getMonth() * 100 + today.getDate();
-  return seed;
+  return Math.abs(seed);
 }
 
 function pickPrescription(typeKey) {
   const pool = PRESCRIPTIONS[typeKey];
-  const seed = answersToSeed();
-  return pool[seed % pool.length];
+  return pool[answersToSeed() % pool.length];
 }
 
-// =================== 결과 표시 ===================
+// ============================================================
+// 결과 렌더
+// ============================================================
 function finishQuiz() {
-  // 점수와 응답을 콘솔에 출력 (디버그용)
-  const debugScores = { depho: 0, yugang: 0, yulhwa: 0, pungya: 0, banseok: 0, lyeong: 0, chusuk: 0, chuna: 0 };
-  QUESTIONS.forEach(q => {
-    const ans = answers[q.id];
-    if (ans === undefined || ans === null) return;
-    if (q.type === 'multi') {
-      ans.forEach(idx => Object.entries(q.options[idx].scores).forEach(([k,v]) => { debugScores[k] += v; }));
-    } else {
-      Object.entries(q.options[ans].scores).forEach(([k,v]) => { debugScores[k] += v; });
-    }
-  });
-  console.log('[오늘의 나] 응답:', answers);
-  console.log('[오늘의 나] 점수:', debugScores);
-
-  resultType = calculateType();
-  console.log('[오늘의 나] 선택된 유형:', resultType, TYPES[resultType].name);
-
+  const result = calculateType();
+  resultType = result.primary;
   const t = TYPES[resultType];
-  // 메인·진단 섹션 모두 확실히 숨기고 결과만 보이기
-  document.getElementById('main-section').style.display = 'none';
-  document.getElementById('quiz-section').classList.remove('active');
-  document.getElementById('quiz-section').style.display = 'none';
-  document.getElementById('result-section').classList.add('active');
-  document.getElementById('result-section').style.display = 'block';
+  const sec = TYPES[result.secondary];
 
-  document.getElementById('resultType').textContent = t.name;
-  document.getElementById('resultTypeHanja').textContent = t.hanja;
-  document.getElementById('resultDesc').innerHTML = t.desc.replace(/\n/g, '<br>');
+  console.log('[Today, Me] 최종:', resultType, t.name);
 
-  document.getElementById('resultPrescription').textContent = pickPrescription(resultType);
+  // Type color CSS variable for result page
+  const resultPage = document.getElementById('stage-result');
+  resultPage.style.setProperty('--type-color', t.color);
+  resultPage.style.setProperty('--type-color-2', t.color2);
 
-  document.getElementById('resultQuoteText').textContent = todayQuote.quote;
-  document.getElementById('resultQuoteAttr').textContent = `— ${todayQuote.figure}`;
+  document.getElementById('resTypeName').innerHTML = '<span class="em">' + t.name + '</span>';
+  document.getElementById('resTypeEn').textContent = t.en;
+  document.getElementById('resTypeHanja').textContent = t.hanja;
+  document.getElementById('resDesc').textContent = t.desc;
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('resPrescription').textContent = pickPrescription(resultType);
+
+  document.getElementById('resQuoteFigure').textContent = todayQuote.figure_kr || todayQuote.figure;
+  document.getElementById('resQuoteText').innerHTML = '"' + todayQuote.quote + '"';
+  document.getElementById('resQuoteAttr').textContent = '— ' + (todayQuote.country ? todayQuote.country + ' · ' : '') + todayQuote.context;
+
+  document.getElementById('resSecondary').innerHTML =
+    '오늘의 보조 결: <strong>' + sec.name + '</strong> · <em style="font-family: \'EB Garamond\', serif">' + sec.en + '</em>';
+
+  // Share card
+  document.getElementById('scDate').textContent = dateLabel;
+  document.getElementById('scName').textContent = t.name;
+  document.getElementById('scHanja').textContent = t.hanja;
+  document.getElementById('scQuote').textContent = pickPrescription(resultType).replace(/^[^—]*—\s*/, '');
+
+  showStage('result');
 }
 
-function restart() {
-  document.getElementById('result-section').classList.remove('active');
-  document.getElementById('result-section').style.display = 'none';
-  document.getElementById('quiz-section').style.display = '';
-  document.getElementById('main-section').style.display = '';
-  currentQuestion = 0;
-  answers = {};
-  resultType = null;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function restart(redo) {
+  if (redo) {
+    startQuiz();
+  } else {
+    showStage('main');
+    answers = {};
+    resultType = null;
+    questions = [];
+  }
 }
 
-// =================== 공유 ===================
+// ============================================================
+// 공유
+// ============================================================
 function getShareUrl() {
   if (window.self !== window.top && document.referrer) return document.referrer;
   return location.href;
@@ -990,8 +1602,12 @@ function getShareUrl() {
 async function copyResult() {
   if (!resultType) return;
   const t = TYPES[resultType];
-  const presc = document.getElementById('resultPrescription').textContent;
-  const text = `오늘의 나 — ${t.name} (${t.hanja})\n${presc}\n\n${dateStr} · ${todayQuote.figure}\n"${todayQuote.quote}"\n\n${getShareUrl()}`;
+  const presc = document.getElementById('resPrescription').textContent;
+  const text = '오늘의 나 — ' + t.name + ' (' + t.hanja + ' · ' + t.en + ')\n\n' +
+               presc + '\n\n' +
+               dateLabel + ' · ' + (todayQuote.figure_kr || todayQuote.figure) + '\n' +
+               '"' + todayQuote.quote + '"\n\n' +
+               getShareUrl();
   let ok = false;
   if (navigator.clipboard && navigator.clipboard.writeText) {
     try { await navigator.clipboard.writeText(text); ok = true; } catch(e) {}
@@ -999,8 +1615,7 @@ async function copyResult() {
   if (!ok) {
     try {
       const ta = document.createElement('textarea');
-      ta.value = text;
-      ta.style.position = 'fixed'; ta.style.opacity = '0';
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.focus(); ta.select();
       ok = document.execCommand('copy');
       document.body.removeChild(ta);
@@ -1010,11 +1625,27 @@ async function copyResult() {
   else prompt('아래 내용을 복사하세요', text);
 }
 
+async function shareNative() {
+  if (!resultType) return;
+  const t = TYPES[resultType];
+  const presc = document.getElementById('resPrescription').textContent;
+  const text = '오늘의 나 — ' + t.name + '\n' + presc;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: 'Today, Me. — 오늘의 나', text: text, url: getShareUrl() });
+      return;
+    } catch(e) {
+      if (e.name === 'AbortError') return;
+    }
+  }
+  copyResult();
+}
+
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2000);
+  setTimeout(function() { t.classList.remove('show'); }, 2000);
 }
 </script>
 </body>
