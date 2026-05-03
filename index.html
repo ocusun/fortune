@@ -399,9 +399,11 @@
     font-size: 13px; color: var(--ink-4); margin-top: 14px; text-align: right;
   }
 
+  /* === Quiz Nav (수정된 부분) === */
   .quiz-nav {
     display: flex; justify-content: space-between; align-items: center;
-    margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line);
+    margin-top: 48px; padding: 20px 0; border-top: 1px solid var(--line);
+    position: sticky; bottom: 0; background: var(--paper); z-index: 10;
   }
   .nav-btn {
     padding: 12px 24px; background: transparent; border: 1px solid var(--ink-3);
@@ -909,7 +911,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
           공유
         </button>
-        <button class="share-btn" onclick="alert('카드 캡처는 모바일·PC에서 스크린샷 기능을 사용해주세요.\\n(곧 카드 다운로드 기능도 추가됩니다)')">
+        <button class="share-btn" onclick="alert('카드 캡처는 모바일·PC에서 스크린샷 기능을 사용해주세요.\n(곧 카드 다운로드 기능도 추가됩니다)')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           카드 저장
         </button>
@@ -1286,10 +1288,11 @@ const POOLS = {
 // ============================================================
 // 상태
 // ============================================================
-let questions = [];   // 매 세션마다 보기 풀에서 무작위 픽한 결과
+let questions = [];   
 let currentQuestion = 0;
 let answers = {};
 let resultType = null;
+let autoAdvanceTimeout = null; // 자동 넘김 타이머 변수 추가
 
 // ============================================================
 // 초기화 (메인 페이지)
@@ -1450,13 +1453,23 @@ function selectOption(idx) {
     if (arr.indexOf(idx) >= 0) arr = arr.filter(function(i){return i !== idx;});
     else arr = arr.concat([idx]);
     answers[q.id] = arr;
+    renderQuestion();
   } else {
     answers[q.id] = idx;
+    renderQuestion();
+    
+    // 기존 타이머가 있다면 취소 (빠른 중복 클릭 방지)
+    if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout);
+    
+    // 선택 후 0.35초 뒤에 자동으로 다음 문제로 이동
+    autoAdvanceTimeout = setTimeout(function() {
+      nextQuestion();
+    }, 350); 
   }
-  renderQuestion();
 }
 
 function nextQuestion() {
+  if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout); // 수동 클릭 시 타이머 해제
   const q = questions[currentQuestion];
   if (q.type === 'single' && answers[q.id] === undefined) {
     showToast('한 가지를 선택해주세요');
@@ -1472,6 +1485,7 @@ function nextQuestion() {
 }
 
 function prevQuestion() {
+  if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout); // 수동 클릭 시 타이머 해제
   if (currentQuestion > 0) {
     currentQuestion--;
     renderQuestion();
