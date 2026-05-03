@@ -342,8 +342,8 @@
     background: var(--coral); transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .question-block {
-    flex: 1;
+  .question-block { flex: 1; }
+  .question-block.is-entering {
     animation: questionIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
   @keyframes questionIn {
@@ -399,11 +399,9 @@
     font-size: 13px; color: var(--ink-4); margin-top: 14px; text-align: right;
   }
 
-  /* === Quiz Nav (수정된 부분) === */
   .quiz-nav {
     display: flex; justify-content: space-between; align-items: center;
-    margin-top: 48px; padding: 20px 0; border-top: 1px solid var(--line);
-    position: sticky; bottom: 0; background: var(--paper); z-index: 10;
+    margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line);
   }
   .nav-btn {
     padding: 12px 24px; background: transparent; border: 1px solid var(--ink-3);
@@ -820,7 +818,7 @@
   <footer class="footer">
     <div>© Today, Me · MirJournal</div>
     <div class="center">深 流 烈 風 盤 黎 秋 春</div>
-    <div>v3.0 — Editorial</div>
+    <div>v3.1 — Editorial</div>
   </footer>
 </div>
 
@@ -919,14 +917,14 @@
     </div>
 
     <div class="result-actions">
-      <button class="btn" onclick="restart()">처음으로</button>
+      <button class="btn" onclick="restart(false)">처음으로</button>
       <button class="btn primary" onclick="restart(true)">다시 진단하기 ↻</button>
     </div>
   </div>
 </div>
 
 <script>
-const APP_VERSION = '3.0';
+const APP_VERSION = '3.1';
 console.log('[Today, Me] v' + APP_VERSION);
 
 // ============================================================
@@ -1288,11 +1286,10 @@ const POOLS = {
 // ============================================================
 // 상태
 // ============================================================
-let questions = [];   
+let questions = [];
 let currentQuestion = 0;
 let answers = {};
 let resultType = null;
-let autoAdvanceTimeout = null; // 자동 넘김 타이머 변수 추가
 
 // ============================================================
 // 초기화 (메인 페이지)
@@ -1342,7 +1339,8 @@ function showStage(name) {
     document.getElementById('stage-' + s).classList.remove('is-active');
   });
   document.getElementById('stage-' + name).classList.add('is-active');
-  window.scrollTo({ top: 0, behavior: 'instant' });
+  // 모든 브라우저 호환을 위해 옵션 객체 대신 두 인자 형태 사용
+  window.scrollTo(0, 0);
 }
 
 function goHome() { showStage('main'); }
@@ -1360,14 +1358,12 @@ function shuffleArray(arr) {
 }
 
 function buildQuestions() {
-  // Q1, Q2, Q3, Q4, Q5, Q6, Q7, Q8, Q9, Q10 순서로
   const qs = [];
 
-  qs.push({ id: 'Q1', ...FIXED_QUESTIONS.Q1, options: FIXED_QUESTIONS.Q1.options });
-  qs.push({ id: 'Q2', ...FIXED_QUESTIONS.Q2, options: FIXED_QUESTIONS.Q2.options });
-  qs.push({ id: 'Q3', ...FIXED_QUESTIONS.Q3, options: FIXED_QUESTIONS.Q3.options });
+  qs.push(Object.assign({ id: 'Q1' }, FIXED_QUESTIONS.Q1));
+  qs.push(Object.assign({ id: 'Q2' }, FIXED_QUESTIONS.Q2));
+  qs.push(Object.assign({ id: 'Q3' }, FIXED_QUESTIONS.Q3));
 
-  // Q4, Q5: 풀에서 무작위 픽
   const q4 = POOLS.Q4;
   qs.push({ id: 'Q4', text: q4.text, hint: q4.hint, type: q4.type, layout: q4.layout,
     options: shuffleArray(q4.options).slice(0, q4.pickCount) });
@@ -1376,7 +1372,6 @@ function buildQuestions() {
   qs.push({ id: 'Q5', text: q5.text, hint: q5.hint, type: q5.type, layout: q5.layout,
     options: shuffleArray(q5.options).slice(0, q5.pickCount) });
 
-  // Q6, Q7: 풀에서 무작위 픽
   const q6 = POOLS.Q6;
   qs.push({ id: 'Q6', text: q6.text, hint: q6.hint, type: q6.type, layout: q6.layout,
     options: shuffleArray(q6.options).slice(0, q6.pickCount) });
@@ -1385,10 +1380,9 @@ function buildQuestions() {
   qs.push({ id: 'Q7', text: q7.text, hint: q7.hint, type: q7.type, layout: q7.layout,
     options: shuffleArray(q7.options).slice(0, q7.pickCount) });
 
-  qs.push({ id: 'Q8', ...FIXED_QUESTIONS.Q8, options: FIXED_QUESTIONS.Q8.options });
-  qs.push({ id: 'Q9', ...FIXED_QUESTIONS.Q9, options: FIXED_QUESTIONS.Q9.options });
+  qs.push(Object.assign({ id: 'Q8' }, FIXED_QUESTIONS.Q8));
+  qs.push(Object.assign({ id: 'Q9' }, FIXED_QUESTIONS.Q9));
 
-  // Q10
   const q10 = POOLS.Q10;
   qs.push({ id: 'Q10', text: q10.text, hint: q10.hint, type: q10.type, layout: q10.layout,
     options: shuffleArray(q10.options).slice(0, q10.pickCount) });
@@ -1407,7 +1401,7 @@ function startQuiz() {
 }
 
 // ============================================================
-// 진단 화면 렌더
+// 진단 화면 렌더 — 클래스 토글 방식으로 애니메이션 재실행
 // ============================================================
 function renderQuestion() {
   const q = questions[currentQuestion];
@@ -1435,12 +1429,12 @@ function renderQuestion() {
     html += '<div class="q-multi-hint">— 복수 선택 가능 (선택 안 해도 진행 가능)</div>';
   }
 
-  // re-trigger animation
   const block = document.getElementById('questionBlock');
-  block.style.animation = 'none';
-  block.offsetHeight; // reflow
-  block.style.animation = '';
+  block.classList.remove('is-entering');
   block.innerHTML = html;
+  // 강제 reflow → 클래스 재부여 시 애니메이션 재실행
+  void block.offsetWidth;
+  block.classList.add('is-entering');
 
   document.getElementById('prevBtn').disabled = currentQuestion === 0;
   document.getElementById('nextLabel').textContent = currentQuestion === questions.length - 1 ? '결과 보기' : '다음';
@@ -1453,23 +1447,13 @@ function selectOption(idx) {
     if (arr.indexOf(idx) >= 0) arr = arr.filter(function(i){return i !== idx;});
     else arr = arr.concat([idx]);
     answers[q.id] = arr;
-    renderQuestion();
   } else {
     answers[q.id] = idx;
-    renderQuestion();
-    
-    // 기존 타이머가 있다면 취소 (빠른 중복 클릭 방지)
-    if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout);
-    
-    // 선택 후 0.35초 뒤에 자동으로 다음 문제로 이동
-    autoAdvanceTimeout = setTimeout(function() {
-      nextQuestion();
-    }, 350); 
   }
+  renderQuestion();
 }
 
 function nextQuestion() {
-  if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout); // 수동 클릭 시 타이머 해제
   const q = questions[currentQuestion];
   if (q.type === 'single' && answers[q.id] === undefined) {
     showToast('한 가지를 선택해주세요');
@@ -1478,18 +1462,17 @@ function nextQuestion() {
   if (currentQuestion < questions.length - 1) {
     currentQuestion++;
     renderQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   } else {
     finishQuiz();
   }
 }
 
 function prevQuestion() {
-  if (autoAdvanceTimeout) clearTimeout(autoAdvanceTimeout); // 수동 클릭 시 타이머 해제
   if (currentQuestion > 0) {
     currentQuestion--;
     renderQuestion();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo(0, 0);
   }
 }
 
@@ -1569,7 +1552,7 @@ function finishQuiz() {
 
   console.log('[Today, Me] 최종:', resultType, t.name);
 
-  // Type color CSS variable for result page
+  // 타입 컬러 변수 — 결과 페이지 전체에 적용
   const resultPage = document.getElementById('stage-result');
   resultPage.style.setProperty('--type-color', t.color);
   resultPage.style.setProperty('--type-color-2', t.color2);
@@ -1579,7 +1562,9 @@ function finishQuiz() {
   document.getElementById('resTypeHanja').textContent = t.hanja;
   document.getElementById('resDesc').textContent = t.desc;
 
-  document.getElementById('resPrescription').textContent = pickPrescription(resultType);
+  // 처방을 한 번만 계산해 결과·공유카드 동기화
+  const prescription = pickPrescription(resultType);
+  document.getElementById('resPrescription').textContent = prescription;
 
   document.getElementById('resQuoteFigure').textContent = todayQuote.figure_kr || todayQuote.figure;
   document.getElementById('resQuoteText').innerHTML = '"' + todayQuote.quote + '"';
@@ -1588,11 +1573,11 @@ function finishQuiz() {
   document.getElementById('resSecondary').innerHTML =
     '오늘의 보조 결: <strong>' + sec.name + '</strong> · <em style="font-family: \'EB Garamond\', serif">' + sec.en + '</em>';
 
-  // Share card
+  // 공유 카드 — 오늘의 명언을 노출 (의도와 어긋나던 정규식 제거)
   document.getElementById('scDate').textContent = dateLabel;
   document.getElementById('scName').textContent = t.name;
   document.getElementById('scHanja').textContent = t.hanja;
-  document.getElementById('scQuote').textContent = pickPrescription(resultType).replace(/^[^—]*—\s*/, '');
+  document.getElementById('scQuote').textContent = todayQuote.quote;
 
   showStage('result');
 }
